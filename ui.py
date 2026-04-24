@@ -3,68 +3,51 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QLabel,
                              QPushButton, QCheckBox, QWidget, QVBoxLayout, QRadioButton, QButtonGroup, QLineEdit,
                              QHBoxLayout, QComboBox, QGroupBox, QTextEdit)
 from   PyQt5.QtGui     import QIcon, QFont
-from PyQt5.QtCore import Qt, QThread
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from   PyQt5.QtGui     import QPixmap
 
 from constants import UICONSTANTS
 from Worker import Worker
 
 class MainWindow(QMainWindow):
+
+    data_signal = pyqtSignal(str, str, int, int)
+
     def __init__(self):
         super().__init__()
         self.backend_thread = QThread()
         self.worker = Worker()
         self.worker.moveToThread(self.backend_thread)
 
+        #Initializing the UI
         self.initUI()
 
-        self.encrypt_button.clicked.connect(self.algo_picker)
-        self.decrypt_button.clicked.connect(self.algo_picker)
-        self.bruteforce_button.clicked.connect(self.algo_picker)
-        self.drop_down_menu.currentIndexChanged.connect(self.algo_picker)
+        self.backend_thread.start()
 
-    def algo_picker(self):
-        algo = self.drop_down_menu.currentData()
-        self.worker.input = self.input_bar.toPlainText()
-        self.worker.key   = self.key_bar.text()
+        self.data_signal.connect(self.worker.router)
 
-        match algo:
-            case 1:
-                self.key_bar.setPlaceholderText("Enter a key (0 -> 25):")
-                self.bruteforce_button.setEnabled(True)
-                self.encrypt_button.clicked.connect(self.ceaser_encrypt)
-                self.decrypt_button.clicked.connect(self.ceaser_decrypt)
-                self.bruteforce_button.clicked.connect(self.ceaser_bruteforce)
+        #frontend signals
+        self.encrypt_button.clicked.connect(self.send_data)
+        self.decrypt_button.clicked.connect(self.send_data)
 
-            case 2:
-                self.key_bar.setPlaceholderText("Enter a keyword:")
-                self.bruteforce_button.setEnabled(False)
-                self.encrypt_button.clicked.connect(self.mono_encrypt)
-                self.decrypt_button.clicked.connect(self.mono_decrypt)
+        #backend signals
+        self.worker.done_signal.connect(self.update_output)
 
-    def ceaser_encrypt(self):
-        cipher = self.worker.Ceaser_Encrypt()
-        self.output_bar.setText(cipher)
+    def send_data(self):
+        input     = self.input_bar.toPlainText()
+        key       = self.key_bar.text()
+        algorithm = self.drop_down_menu.currentData()
 
-    def ceaser_decrypt(self):
-        plain = self.worker.Ceaser_Decrypt()
-        self.output_bar.setText(plain)
+        if self.sender() == self.encrypt_button:
+            mode = 1
+        else:
+            mode = 2
 
-    def ceaser_bruteforce(self):
-        out = ""
-        for k in range(25):
-            self.worker.key = k
-            out += f"\n[{k}] {self.worker.Ceaser_Decrypt()}\n"
-            out += "---------------------------------"
-        self.output_bar.setText(out)
+        self.data_signal.emit(input, key, algorithm, mode)
 
-    def mono_encrypt(self):
-        cipher = self.worker.Mono_Encrypt()
-        self.output_bar.setText(cipher)
-
-    def mono_decrypt(self):
-        plain = self.worker.Mono_Decrypt()
-        self.output_bar.setText(plain)
+    def update_output(self, output):
+        self.output_bar.clear()
+        self.output_bar.setPlainText(output)
 
     def initUI(self):
         #window setup
