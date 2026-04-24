@@ -1,7 +1,7 @@
 import string
 
 
-def encryption(key, message):
+def mono_encrypt(message, key):
     key       = key.lower()
     values    = list(key.replace(" ", ""))
     values    = list(dict.fromkeys(values))
@@ -16,9 +16,8 @@ def encryption(key, message):
         else:
             encrypted_msg += letter
     return encrypted_msg.upper()
-encryption("MMaarrccoo","marco" )
 
-def decryption(key, encrypted_message):
+def mono_decrypt(encrypted_message, key):
     key       = key.lower()
     values    = list(key.replace(" ", ""))
     key       = key.lower()

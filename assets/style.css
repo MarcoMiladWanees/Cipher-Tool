@@ -1,0 +1,112 @@
+/* 1. Global Window Spacing */
+QMainWindow {
+    background-color: #F0F2F5; /* Light grey background makes white cards "pop" */
+}
+
+/* 2. Enhanced Card (GroupBox) Logic */
+QGroupBox {
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid #E0E0E0;
+    border-radius: 12px; /* Increased for a softer look */
+    margin-top: 25px;
+    background-color: #FFFFFF;
+    padding: 15px; /* Internal padding for widgets */
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 15px;
+    padding: 0 8px;
+    color: #666666;
+}
+
+/* 3. The Green Focus Ring */
+QLineEdit {
+    padding: 10px;
+    border: 1px solid #DCDCDC;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    color: #2C2C2E;
+    font-size: 13px;
+}
+
+QLineEdit:focus {
+    /* The specific green from your screenshot */
+    border: 1.5px solid #34C759;
+}
+
+/* 4. Button Text Capitalization & Shadows */
+QPushButton {
+    background-color: #FFFFFF;
+    border: 1px solid #DCDCDC;
+    border-radius: 10px;
+    padding: 8px 18px;
+    font-weight: 500;
+    color: #4A4A4A;
+}
+
+QPushButton:hover {
+    background-color: #F9F9F9;
+    border-color: #C7C7CC;
+}
+
+/* 5. ComboBox Styling */
+QComboBox {
+    border: 1px solid #DCDCDC;
+    border-radius: 8px;
+    padding: 5px 15px;
+    background-color: #FFFFFF;
+    color: #333333;
+    min-height: 30px;
+}
+
+QComboBox:hover {
+    border-color: #34C759; /* Matching that green focus */
+}
+
+/* This is the container for the arrow */
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 30px;
+    border-left: 1px solid #E5E5EA; /* Subtle divider */
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+/* The actual arrow shape */
+QComboBox::down-arrow {
+    image: url(assets/down-arrow.png); /* Hide the default ugly arrow */
+    width: 12;
+    height: 12;
+}
+
+/* The popup list that appears when clicked */
+QAbstractItemView {
+    border: 1px solid #E0E0E0;
+    background-color: #FFFFFF;
+    selection-background-color: #34C759;
+    selection-color: #FFFFFF;
+    outline: none;
+    border-radius: 8px;
+}
+
+/* 6. Missing: The Scrollbar (Essential for Modern Apps) */
+QScrollBar:vertical {
+    border: none;
+    background: transparent;
+    width: 8px;
+    margin: 0px;
+}
+
+QScrollBar::handle:vertical {
+    background: #C7C7CC;
+    border-radius: 4px;
+    min-height: 20px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #8E8E93;
+}

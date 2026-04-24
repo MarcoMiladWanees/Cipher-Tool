@@ -2,7 +2,7 @@
 # msg = str(input("Enter a msg: "))
 # key = int(input("Enter a key: "))
 
-def encryption(msg, key):
+def ceaser_encrypt(msg, key):
     msg = msg.lower()
     cipher = ""
     for char in msg:
@@ -13,7 +13,7 @@ def encryption(msg, key):
             cipher += char
     return cipher.upper()
 
-def decryption(cipher, key):
+def ceaser_decrypt(cipher, key):
     cipher = cipher.lower()
     msg = ""
     for char in cipher:
