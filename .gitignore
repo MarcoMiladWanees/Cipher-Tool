@@ -11,3 +11,10 @@ dist/
 *.pyo
 *.pyd
 .DS_Store
+
+.idea/
+build/
+dist/
+*.spec
+__pycache__/
+*.pyc
