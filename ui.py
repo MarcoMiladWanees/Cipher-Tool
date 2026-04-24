@@ -29,46 +29,60 @@ class MainWindow(QMainWindow):
         #frontend signals
         self.encrypt_button.clicked.connect(self.handle_errors_send_data)
         self.decrypt_button.clicked.connect(self.handle_errors_send_data)
+        self.bruteforce_button.clicked.connect(self.handle_errors_send_data)
+        self.input_bar.textChanged.connect(lambda: self.update_widget_style(self.input_bar, False))
+        self.key_bar.textChanged.connect(lambda: self.update_widget_style(self.key_bar, False))
 
         #backend signals
         self.worker.done_signal.connect(self.update_output)
 
+    def update_widget_style(self, widget, is_urgent):
+        widget.setProperty("urgent", is_urgent)
+        widget.style().unpolish(widget)
+        widget.style().polish(widget)
+        widget.update()
+
     def handle_errors_send_data(self):
         self.output_bar.clear()
-        input = self.input_bar.toPlainText()
+        plain_text = self.input_bar.toPlainText()
         key = self.key_bar.text()
         algorithm = self.drop_down_menu.currentData()
-
-        if not input:
-            self.input_bar.setProperty("urgent", True)
-        else:
-            self.input_bar.setProperty("urgent", False)
-
-        if not key:
-            self.key_bar.setProperty("urgent", True)
-            return
-        else:
-            self.key_bar.setProperty("urgent", False)
+        flag = False
+        key_urgent = False
+        input_urgent = False
 
         match algorithm:
             case 1:
-                if not key.isdigit():
-                    self.key_bar.setProperty("urgent", True)
-                    return
+                if not key.isdigit() or not key:
+                    key_urgent = True
             case 2:
-                if key.isdigit():
-                    self.key_bar.setProperty("urgent", True)
-                    return
+                if key.isdigit() or not key:
+                    key_urgent = True
+
+        if not plain_text:
+            input_urgent = True
+
+        if not key_urgent and not input_urgent:
+            flag = True
+        else:
+            flag = False
 
         if self.sender() == self.encrypt_button:
             mode = 1
-        else:
+        elif self.sender() == self.decrypt_button:
             mode = 2
+        else:
+            mode = 3
+            key_urgent = False
+            if not input_urgent: flag = True
 
-        self.send_data(input, key,algorithm,  mode)
+        self.update_widget_style(self.key_bar, key_urgent)
+        self.update_widget_style(self.input_bar, input_urgent)
 
-    def send_data(self, input, key, algorithm, mode):
-        self.data_signal.emit(input, key, algorithm, mode)
+
+
+        if flag:
+            self.data_signal.emit(plain_text, key, algorithm, mode)
 
     def update_output(self, output):
         self.output_bar.clear()
