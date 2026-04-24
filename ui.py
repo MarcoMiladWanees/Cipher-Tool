@@ -27,22 +27,47 @@ class MainWindow(QMainWindow):
         self.data_signal.connect(self.worker.router)
 
         #frontend signals
-        self.encrypt_button.clicked.connect(self.send_data)
-        self.decrypt_button.clicked.connect(self.send_data)
+        self.encrypt_button.clicked.connect(self.handle_errors_send_data)
+        self.decrypt_button.clicked.connect(self.handle_errors_send_data)
 
         #backend signals
         self.worker.done_signal.connect(self.update_output)
 
-    def send_data(self):
-        input     = self.input_bar.toPlainText()
-        key       = self.key_bar.text()
+    def handle_errors_send_data(self):
+        self.output_bar.clear()
+        input = self.input_bar.toPlainText()
+        key = self.key_bar.text()
         algorithm = self.drop_down_menu.currentData()
+
+        if not input:
+            self.input_bar.setProperty("urgent", True)
+        else:
+            self.input_bar.setProperty("urgent", False)
+
+        if not key:
+            self.key_bar.setProperty("urgent", True)
+            return
+        else:
+            self.key_bar.setProperty("urgent", False)
+
+        match algorithm:
+            case 1:
+                if not key.isdigit():
+                    self.key_bar.setProperty("urgent", True)
+                    return
+            case 2:
+                if key.isdigit():
+                    self.key_bar.setProperty("urgent", True)
+                    return
 
         if self.sender() == self.encrypt_button:
             mode = 1
         else:
             mode = 2
 
+        self.send_data(input, key,algorithm,  mode)
+
+    def send_data(self, input, key, algorithm, mode):
         self.data_signal.emit(input, key, algorithm, mode)
 
     def update_output(self, output):

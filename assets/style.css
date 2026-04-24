@@ -1,17 +1,19 @@
-/* 1. Global Window Spacing */
+/* 1. Global Application Style */
 QMainWindow {
-    background-color: #F0F2F5; /* Light grey background makes white cards "pop" */
+    background-color: #F0F2F5; /* Light grey for depth */
+    font-family: "Segoe UI", "Inter", "SF Pro Display", sans-serif;
 }
 
-/* 2. Enhanced Card (GroupBox) Logic */
+/* 2. GroupBox / Card Logic */
 QGroupBox {
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-radius: 12px;
+    margin-top: 25px;
+    padding: 15px;
     font-weight: 600;
     font-size: 14px;
-    border: 1px solid #E0E0E0;
-    border-radius: 12px; /* Increased for a softer look */
-    margin-top: 25px;
-    background-color: #FFFFFF;
-    padding: 15px; /* Internal padding for widgets */
+    color: #2C2C2E;
 }
 
 QGroupBox::title {
@@ -19,71 +21,98 @@ QGroupBox::title {
     subcontrol-position: top left;
     left: 15px;
     padding: 0 8px;
-    color: #666666;
+    color: #8E8E93;
 }
 
-/* 3. The Green Focus Ring */
-QLineEdit {
-    padding: 10px;
+/* 3. LineEdits & TextEdits (Unified Focus Logic) */
+QLineEdit, QTextEdit {
+    background-color: #FFFFFF;
     border: 1px solid #DCDCDC;
     border-radius: 8px;
-    background-color: #FFFFFF;
+    padding: 10px;
     color: #2C2C2E;
     font-size: 13px;
+    selection-background-color: #34C759;
 }
 
-QLineEdit:focus {
-    /* The specific green from your screenshot */
-    border: 1.5px solid #34C759;
+QLineEdit:hover, QTextEdit:hover {
+    border: 1px solid #C7C7CC;
 }
 
-/* 4. Button Text Capitalization & Shadows */
+/* The Green Focus Ring - Your signature look */
+QLineEdit:focus, QTextEdit:focus {
+    border: 2px solid #34C759;
+    background-color: #FFFFFF; /* Ensures it stays white inside */
+    outline: none;
+}
+
+/* Error State */
+QLineEdit[urgent="true"], QTextEdit[urgent="true"] {
+    border: 2px solid #FF3B30; /* iOS Red */
+    background-color: #FFF2F2;
+}
+
+/* 4. Modern PushButtons */
 QPushButton {
     background-color: #FFFFFF;
     border: 1px solid #DCDCDC;
     border-radius: 10px;
-    padding: 8px 18px;
-    font-weight: 500;
+    padding: 10px 20px;
+    font-weight: 600;
     color: #4A4A4A;
 }
 
 QPushButton:hover {
     background-color: #F9F9F9;
-    border-color: #C7C7CC;
+    border-color: #34C759;
+    color: #34C759; /* Text turns green on hover */
+}
+
+QPushButton:pressed {
+    background-color: #F2F2F7;
+    border-color: #248A3D; /* Darker green for press */
+}
+
+/* Primary Action Style (Optional: apply objectName "primaryButton" in Python) */
+QPushButton#primaryButton {
+    background-color: #34C759;
+    color: #FFFFFF;
+    border: none;
+}
+
+QPushButton#primaryButton:hover {
+    background-color: #28A745;
 }
 
 /* 5. ComboBox Styling */
 QComboBox {
     border: 1px solid #DCDCDC;
     border-radius: 8px;
-    padding: 5px 15px;
+    padding: 8px 15px;
     background-color: #FFFFFF;
-    color: #333333;
-    min-height: 30px;
+    color: #2C2C2E;
+    min-height: 25px;
 }
 
 QComboBox:hover {
-    border-color: #34C759; /* Matching that green focus */
+    border-color: #34C759;
 }
 
-/* This is the container for the arrow */
 QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 30px;
-    border-left: 1px solid #E5E5EA; /* Subtle divider */
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
+    border-left: 1px solid #E5E5EA;
 }
 
-/* The actual arrow shape */
 QComboBox::down-arrow {
-    image: url(assets/down-arrow.png); /* Hide the default ugly arrow */
-    width: 12;
-    height: 12;
+    /* Ensure you have an arrow icon in your assets folder */
+    image: url(assets/down-arrow.png);
+    width: 12px;
+    height: 12px;
 }
 
-/* The popup list that appears when clicked */
+/* ComboBox List Popup */
 QAbstractItemView {
     border: 1px solid #E0E0E0;
     background-color: #FFFFFF;
@@ -93,12 +122,12 @@ QAbstractItemView {
     border-radius: 8px;
 }
 
-/* 6. Missing: The Scrollbar (Essential for Modern Apps) */
+/* 6. Minimalist Scrollbar */
 QScrollBar:vertical {
     border: none;
     background: transparent;
     width: 8px;
-    margin: 0px;
+    margin: 4px 0 4px 0;
 }
 
 QScrollBar::handle:vertical {
@@ -108,5 +137,9 @@ QScrollBar::handle:vertical {
 }
 
 QScrollBar::handle:vertical:hover {
-    background: #8E8E93;
+    background: #34C759; /* Green scrollbar on hover for extra polish */
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
 }
