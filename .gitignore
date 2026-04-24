@@ -1,0 +1,13 @@
+# Folders to ignore
+__pycache__/
+.idea/
+venv/
+.venv/
+build/
+dist/
+
+# Files to ignore
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
