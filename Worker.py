@@ -2,6 +2,7 @@ from PyQt5.QtCore import QObject, pyqtSignal
 from cipher_algos.ceaser import *
 from cipher_algos.mono_alphabetic import *
 from cipher_algos.playfair import playfair_encryptor, playfair_decryptor
+from cipher_algos.vigenere import vigenere_encryptor, vigenere_decryptor
 
 
 class Worker(QObject):
@@ -28,6 +29,8 @@ class Worker(QObject):
                 self.done_signal.emit(mono_encryptor(input_text, key))
             case 3:
                 self.done_signal.emit(playfair_encryptor(input_text, key))
+            case 4:
+                self.done_signal.emit(vigenere_encryptor(input_text, key))
 
     def decrypt(self, input_text, key, algorithm):
         match algorithm:
@@ -37,7 +40,8 @@ class Worker(QObject):
                 self.done_signal.emit(mono_decryptor(input_text, key))
             case 3:
                 self.done_signal.emit(playfair_decryptor(input_text, key))
-
+            case 4:
+                self.done_signal.emit(vigenere_decryptor(input_text, key))
     def bruteforce(self, input_text, algorithm):
         output = ""
         match algorithm:

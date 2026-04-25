@@ -41,11 +41,17 @@ class MainWindow(QMainWindow):
         self.input_bar.clear()
         self.output_bar.clear()
         self.key_bar.clear()
-        if self.drop_down_menu.currentData() == 2 or self.drop_down_menu.currentData() == 3:
-            self.bruteforce_button.hide()
-            self.key_bar.setPlaceholderText("Enter a keyword...")
-        if self.drop_down_menu.currentData() == 1:
-            self.bruteforce_button.show()
+        self.update_widget_style(self.input_bar, False)
+        self.update_widget_style(self.key_bar, False)
+
+        algo = self.drop_down_menu.currentData()
+        match algo:
+            case 1:
+                self.bruteforce_button.show()
+                self.key_bar.setPlaceholderText("Enter a key (0 -> 25)")
+            case 2 | 3 | 4:
+                self.bruteforce_button.hide()
+                self.key_bar.setPlaceholderText("Enter a keyword...")
 
     def update_widget_style(self, widget, is_urgent):
         widget.setProperty("urgent", is_urgent)
@@ -63,14 +69,17 @@ class MainWindow(QMainWindow):
         input_urgent = False
 
         match algorithm:
-            case 1:
+            case 1 :
                 if not key.isdigit() or not key:
                     key_urgent = True
             case 2:
                 if key.isdigit() or not key:
                     key_urgent = True
+            case 4:
+                if not key.isalpha() or not key :
+                    key_urgent = True
 
-        if not plain_text:
+        if not plain_text or not plain_text.replace(" ", "").isalpha():
             input_urgent = True
 
         if not key_urgent and not input_urgent:
@@ -136,6 +145,7 @@ class MainWindow(QMainWindow):
         self.drop_down_menu.addItem("Ceaser Cipher", 1)
         self.drop_down_menu.addItem("Monoalphabetic Cipher", 2)
         self.drop_down_menu.addItem("Playfair Cipher", 3)
+        self.drop_down_menu.addItem("Vigenere Cipher", 4)
 
         #key_bar
         self.key_bar = QLineEdit()
