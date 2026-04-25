@@ -29,43 +29,92 @@ def vigenere_key_generator(length,key):
 
     return key
 
-def vigenere_encryptor(msg, key):
-    #formatting msg
-    msg = vigenere_formatter(msg)
-    #translating msg
-    msg = vigenere_translator(msg)
-    #handling key
-    key = vigenere_key_generator(len(msg),key)
-
-    #calculating the cipher
+def vigenere_cipherer(msg, key):
+    # calculating the cipher
     cipher = []
     for i in range(len(msg)):
-        if isinstance(msg[i], int):
             cipher.append((key[i] + msg[i]) % 26)
-        else:
-            cipher.append(msg[i])
 
     cipher_text = [number_to_letter[n] if isinstance(n, int) else n for n in cipher]
     return "".join(cipher_text).upper()
 
-def vigenere_decryptor(cipher, key):
-    # formatting cipher
-    cipher = vigenere_formatter(cipher)
-    # translating msg
-    cipher = vigenere_translator(cipher)
-    # handling key
-    key = vigenere_key_generator(len(cipher), key)
-
+def vigenere_decipherer(cipher, key):
     # calculating the msg
     msg = []
     for i in range(len(cipher)):
-        if isinstance(cipher[i], int):
-            msg.append((cipher[i] - key[i] +26) % 26)
-        else:
-            msg.append(cipher[i])
+        msg.append((cipher[i] - key[i] + 26) % 26)
 
     plain_text = [number_to_letter[n] if isinstance(n, int) else n for n in msg]
     return "".join(plain_text)
 
+def vigenere_encryptor(msg, key):
+    #handling msg
+    msg = vigenere_formatter(msg)
+    msg = vigenere_translator(msg)
+    #handling key
+    key = vigenere_key_generator(len(msg),key)
 
+    return vigenere_cipherer(msg, key)
 
+def vigenere_decryptor(cipher, key):
+    #Handling cipher
+    cipher = vigenere_formatter(cipher)
+    cipher = vigenere_translator(cipher)
+    # handling key
+    key = vigenere_key_generator(len(cipher), key)
+
+    return vigenere_decipherer(cipher, key)
+
+def vigenere_auto_plain_encryptor(msg, key):
+    #HANDLING MSG
+    msg = vigenere_formatter(msg)
+    msg = vigenere_translator(msg)
+    #HANDLING KEY
+    key = vigenere_formatter(key)
+    key = vigenere_translator(key)
+    key.extend(msg)
+
+    return vigenere_cipherer(msg, key)
+
+def vigenere_auto_plain_decryptor(cipher, key):
+    #HANDLING CIPHER
+    cipher = vigenere_formatter(cipher)
+    cipher = vigenere_translator(cipher)
+    # handling key
+    key = vigenere_formatter(key)
+    key = vigenere_translator(key)
+
+    msg = []
+    for i in range(len(cipher)):
+        msg.append((cipher[i] - key[i] + 26) % 26)
+        key.append((cipher[i] - key[i] + 26) % 26)
+
+    plain_text = [number_to_letter[n] if isinstance(n, int) else n for n in msg]
+    return "".join(plain_text)
+
+def vigenere_auto_cipher_encryptor(msg, key):
+    # HANDLING MSG
+    msg = vigenere_formatter(msg)
+    msg = vigenere_translator(msg)
+    # HANDLING KEY
+    key = vigenere_formatter(key)
+    key = vigenere_translator(key)
+
+    cipher = []
+    for i in range(len(msg)):
+        cipher.append((key[i] + msg[i]) % 26)
+        key.append((key[i] + msg[i]) % 26)
+
+    cipher_text = [number_to_letter[n] if isinstance(n, int) else n for n in cipher]
+    return "".join(cipher_text).upper()
+
+def vigenere_auto_cipher_decryptor(cipher, key):
+    # HANDLING CIPHER
+    cipher = vigenere_formatter(cipher)
+    cipher = vigenere_translator(cipher)
+    # handling key
+    key = vigenere_formatter(key)
+    key = vigenere_translator(key)
+    key.extend(cipher)
+
+    return vigenere_decipherer(cipher, key)

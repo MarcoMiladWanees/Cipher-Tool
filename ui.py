@@ -49,7 +49,7 @@ class MainWindow(QMainWindow):
             case 1:
                 self.bruteforce_button.show()
                 self.key_bar.setPlaceholderText("Enter a key (0 -> 25)")
-            case 2 | 3 | 4:
+            case 2 | 3 | 4 | 5 | 6:
                 self.bruteforce_button.hide()
                 self.key_bar.setPlaceholderText("Enter a keyword...")
 
@@ -75,7 +75,7 @@ class MainWindow(QMainWindow):
             case 2:
                 if key.isdigit() or not key:
                     key_urgent = True
-            case 4:
+            case 4 | 5 | 6:
                 if not key.isalpha() or not key :
                     key_urgent = True
 
@@ -145,7 +145,9 @@ class MainWindow(QMainWindow):
         self.drop_down_menu.addItem("Ceaser Cipher", 1)
         self.drop_down_menu.addItem("Monoalphabetic Cipher", 2)
         self.drop_down_menu.addItem("Playfair Cipher", 3)
-        self.drop_down_menu.addItem("Vigenere Cipher", 4)
+        self.drop_down_menu.addItem("Vigenère Cipher", 4)
+        self.drop_down_menu.addItem("Vigenère auto (Plain) key", 5)
+        self.drop_down_menu.addItem("Vigenère auto (Cipher) key", 6)
 
         #key_bar
         self.key_bar = QLineEdit()
