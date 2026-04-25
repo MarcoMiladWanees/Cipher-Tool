@@ -27,6 +27,7 @@ class MainWindow(QMainWindow):
         self.data_signal.connect(self.worker.router)
 
         #frontend signals
+        self.drop_down_menu.currentIndexChanged.connect(self.update_ui)
         self.encrypt_button.clicked.connect(self.handle_errors_send_data)
         self.decrypt_button.clicked.connect(self.handle_errors_send_data)
         self.bruteforce_button.clicked.connect(self.handle_errors_send_data)
@@ -35,6 +36,16 @@ class MainWindow(QMainWindow):
 
         #backend signals
         self.worker.done_signal.connect(self.update_output)
+
+    def update_ui(self):
+        self.input_bar.clear()
+        self.output_bar.clear()
+        self.key_bar.clear()
+        if self.drop_down_menu.currentData() == 2 or self.drop_down_menu.currentData() == 3:
+            self.bruteforce_button.hide()
+            self.key_bar.setPlaceholderText("Enter a keyword...")
+        if self.drop_down_menu.currentData() == 1:
+            self.bruteforce_button.show()
 
     def update_widget_style(self, widget, is_urgent):
         widget.setProperty("urgent", is_urgent)
@@ -124,6 +135,7 @@ class MainWindow(QMainWindow):
         self.drop_down_menu = QComboBox()
         self.drop_down_menu.addItem("Ceaser Cipher", 1)
         self.drop_down_menu.addItem("Monoalphabetic Cipher", 2)
+        self.drop_down_menu.addItem("Playfair Cipher", 3)
 
         #key_bar
         self.key_bar = QLineEdit()

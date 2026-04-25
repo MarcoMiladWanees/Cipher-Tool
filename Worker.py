@@ -1,6 +1,7 @@
 from PyQt5.QtCore import QObject, pyqtSignal
-from Ceaser.Algorithm import *
-from Monoalphabitic.Algorithm import *
+from cipher_algos.ceaser import *
+from cipher_algos.mono_alphabetic import *
+from cipher_algos.playfair import playfair_encryptor, playfair_decryptor
 
 
 class Worker(QObject):
@@ -22,23 +23,26 @@ class Worker(QObject):
     def encrypt(self, input_text, key, algorithm):
         match algorithm:
             case 1:
-                self.done_signal.emit(ceaser_encrypt(input_text, int(key)))
+                self.done_signal.emit(ceaser_encryptor(input_text, int(key)))
             case 2:
-                self.done_signal.emit(mono_encrypt(input_text, key))
+                self.done_signal.emit(mono_encryptor(input_text, key))
+            case 3:
+                self.done_signal.emit(playfair_encryptor(input_text, key))
+
+    def decrypt(self, input_text, key, algorithm):
+        match algorithm:
+            case 1:
+                self.done_signal.emit(ceaser_decryptor(input_text, int(key)))
+            case 2:
+                self.done_signal.emit(mono_decryptor(input_text, key))
+            case 3:
+                self.done_signal.emit(playfair_decryptor(input_text, key))
 
     def bruteforce(self, input_text, algorithm):
         output = ""
         match algorithm:
             case 1:
                 for k in range(26):
-                    output += f"\n[{k}] {ceaser_decrypt(input_text, k)}\n"
+                    output += f"\n[{k}] {ceaser_decryptor(input_text, k)}\n"
                     output += "--------------------------------------"
         self.done_signal.emit(output)
-
-    def decrypt(self, input_text, key, algorithm):
-        match algorithm:
-            case 1:
-                self.done_signal.emit(ceaser_decrypt(input_text, int(key)))
-            case 2:
-                self.done_signal.emit(mono_decrypt(input_text, key))
-

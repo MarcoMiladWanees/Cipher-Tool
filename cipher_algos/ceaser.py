@@ -1,8 +1,4 @@
-"Rome is the greatest empire"
-# msg = str(input("Enter a msg: "))
-# key = int(input("Enter a key: "))
-
-def ceaser_encrypt(msg, key):
+def ceaser_encryptor(msg, key):
     msg = msg.lower()
     cipher = ""
     for char in msg:
@@ -13,7 +9,7 @@ def ceaser_encrypt(msg, key):
             cipher += char
     return cipher.upper()
 
-def ceaser_decrypt(cipher, key):
+def ceaser_decryptor(cipher, key):
     cipher = cipher.lower()
     msg = ""
     for char in cipher:
