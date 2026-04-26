@@ -26,7 +26,6 @@ letter_to_number = {
     "y": 24,
     "z": 25
 }
-
 number_to_letter = {
     0: "a",
     1: "b",

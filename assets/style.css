@@ -1,145 +1,175 @@
-/* 1. Global Application Style */
+/* =====================================================
+   1. GLOBAL APPLICATION – Dark Cryptographic Base
+===================================================== */
+
 QMainWindow {
-    background-color: #F0F2F5; /* Light grey for depth */
-    font-family: "Segoe UI", "Inter", "SF Pro Display", sans-serif;
+    background-color: #0D1117;   /* Deep graphite */
+    font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+    color: #C9D1D9;
 }
 
-/* 2. GroupBox / Card Logic */
+
+/* =====================================================
+   2. GROUP BOX – Terminal Panels
+===================================================== */
+
 QGroupBox {
-    background-color: #FFFFFF;
-    border: 1px solid #E0E0E0;
-    border-radius: 12px;
-    margin-top: 25px;
-    padding: 15px;
+    background-color: #161B22;   /* Panel tone */
+    border: 1px solid #30363D;
+    border-radius: 8px;
+    margin-top: 20px;
+    padding: 16px;
     font-weight: 600;
-    font-size: 14px;
-    color: #2C2C2E;
+    font-size: 13px;
+    color: #58A6FF;  /* Subtle blue accent */
 }
 
 QGroupBox::title {
     subcontrol-origin: margin;
     subcontrol-position: top left;
-    left: 15px;
-    padding: 0 8px;
-    color: #8E8E93;
+    left: 14px;
+    padding: 0 6px;
+    color: #8B949E;
 }
 
-/* 3. LineEdits & TextEdits (Unified Focus Logic) */
+
+/* =====================================================
+   3. INPUT FIELDS – Cipher Console Style
+===================================================== */
+
 QLineEdit, QTextEdit {
-    background-color: #FFFFFF;
-    border: 1px solid #DCDCDC;
-    border-radius: 8px;
+    background-color: #0D1117;
+    border: 1px solid #30363D;
+    border-radius: 6px;
     padding: 10px;
-    color: #2C2C2E;
+    color: #00FF9C;   /* Neon green data */
     font-size: 13px;
-    selection-background-color: #34C759;
+    selection-background-color: #238636;
+    selection-color: #FFFFFF;
 }
 
 QLineEdit:hover, QTextEdit:hover {
-    border: 1px solid #C7C7CC;
+    border: 1px solid #58A6FF;
 }
 
-/* The Green Focus Ring - Your signature look */
+/* Glow focus effect */
 QLineEdit:focus, QTextEdit:focus {
-    border: 2px solid #34C759;
-    background-color: #FFFFFF; /* Ensures it stays white inside */
-    outline: none;
+    border: 1px solid #00FF9C;
+    background-color: #0D1117;
 }
 
-/* Error State */
+
+/* =====================================================
+   4. ERROR STATE – Critical Crypto Warning
+===================================================== */
+
 QLineEdit[urgent="true"], QTextEdit[urgent="true"] {
-    border: 2px solid #FF3B30; /* iOS Red */
-    background-color: #FFF2F2;
+    border: 1px solid #FF4D4D;
+    background-color: #1A0F12;
+    color: #FF7B72;
 }
 
-/* 4. Modern PushButtons */
+
+/* =====================================================
+   5. BUTTONS – Command Style
+===================================================== */
+
 QPushButton {
-    background-color: #FFFFFF;
-    border: 1px solid #DCDCDC;
-    border-radius: 10px;
-    padding: 10px 20px;
+    background-color: #161B22;
+    border: 1px solid #30363D;
+    border-radius: 6px;
+    padding: 8px 18px;
     font-weight: 600;
-    color: #4A4A4A;
+    color: #C9D1D9;
 }
 
 QPushButton:hover {
-    background-color: #F9F9F9;
-    border-color: #34C759;
-    color: #34C759; /* Text turns green on hover */
+    border: 1px solid #00FF9C;
+    color: #00FF9C;
 }
 
 QPushButton:pressed {
-    background-color: #F2F2F7;
-    border-color: #248A3D; /* Darker green for press */
+    background-color: #0D1117;
+    border: 1px solid #238636;
 }
 
-/* Primary Action Style (Optional: apply objectName "primaryButton" in Python) */
+
+/* PRIMARY ACTION – Encrypt / Decrypt */
 QPushButton#primaryButton {
-    background-color: #34C759;
+    background-color: #238636;
     color: #FFFFFF;
     border: none;
 }
 
 QPushButton#primaryButton:hover {
-    background-color: #28A745;
+    background-color: #2EA043;
 }
 
-/* 5. ComboBox Styling */
+
+/* =====================================================
+   6. COMBOBOX – Algorithm Selector
+===================================================== */
+
 QComboBox {
-    border: 1px solid #DCDCDC;
-    border-radius: 8px;
-    padding: 8px 15px;
-    background-color: #FFFFFF;
-    color: #2C2C2E;
-    min-height: 25px;
+    border: 1px solid #30363D;
+    border-radius: 6px;
+    padding: 6px 14px;
+    background-color: #0D1117;
+    color: #C9D1D9;
+    min-height: 24px;
 }
 
 QComboBox:hover {
-    border-color: #34C759;
+    border-color: #58A6FF;
 }
 
 QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
-    width: 30px;
-    border-left: 1px solid #E5E5EA;
+    width: 28px;
+    border-left: 1px solid #30363D;
 }
 
 QComboBox::down-arrow {
-    /* Ensure you have an arrow icon in your assets folder */
-    image: url(assets/down-arrow.png);
-    width: 12px;
-    height: 12px;
+    image: url(assets/down-arrow-dark.png); /* Use light arrow icon */
+    width: 10px;
+    height: 10px;
 }
 
-/* ComboBox List Popup */
+
+/* Dropdown list */
 QAbstractItemView {
-    border: 1px solid #E0E0E0;
-    background-color: #FFFFFF;
-    selection-background-color: #34C759;
+    border: 1px solid #30363D;
+    background-color: #161B22;
+    selection-background-color: #238636;
     selection-color: #FFFFFF;
+    color: #C9D1D9;
     outline: none;
-    border-radius: 8px;
 }
 
-/* 6. Minimalist Scrollbar */
+
+/* =====================================================
+   7. SCROLLBAR – Minimal Cyber Style
+===================================================== */
+
 QScrollBar:vertical {
     border: none;
-    background: transparent;
+    background: #0D1117;
     width: 8px;
     margin: 4px 0 4px 0;
 }
 
 QScrollBar::handle:vertical {
-    background: #C7C7CC;
+    background: #30363D;
     border-radius: 4px;
     min-height: 20px;
 }
 
 QScrollBar::handle:vertical:hover {
-    background: #34C759; /* Green scrollbar on hover for extra polish */
+    background: #00FF9C;
 }
 
-QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
     height: 0px;
 }
