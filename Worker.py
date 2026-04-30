@@ -3,6 +3,10 @@ from cipher_algos.ceaser import *
 from cipher_algos.mono_alphabetic import *
 from cipher_algos.playfair import playfair_encryptor, playfair_decryptor
 from cipher_algos.vigenere import *
+from cipher_algos.vernam import *
+from cipher_algos.one_time_pad import *
+from cipher_algos.rail_fence import *
+from cipher_algos.row_transposition import *
 
 class Worker(QObject):
 
@@ -34,6 +38,10 @@ class Worker(QObject):
                 self.done_signal.emit(vigenere_auto_plain_encryptor(input_text, key))
             case 6:
                 self.done_signal.emit(vigenere_auto_cipher_encryptor(input_text, key))
+            case 7:
+                self.done_signal.emit(vernam_cipherer(input_text, key))
+            case 8:
+                self.done_signal.emit(one_time_pad(input_text, key))
 
     def decrypt(self, input_text, key, algorithm):
         match algorithm:
@@ -49,6 +57,10 @@ class Worker(QObject):
                 self.done_signal.emit(vigenere_auto_plain_decryptor(input_text, key))
             case 6:
                 self.done_signal.emit(vigenere_auto_cipher_decryptor(input_text, key))
+            case 7:
+                self.done_signal.emit(vernam_cipherer(input_text, key))
+            case 8:
+                self.done_signal.emit(one_time_pad(input_text, key))
 
     def bruteforce(self, input_text, algorithm):
         output = ""

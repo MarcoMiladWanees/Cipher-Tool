@@ -52,6 +52,9 @@ class MainWindow(QMainWindow):
             case 2 | 3 | 4 | 5 | 6:
                 self.bruteforce_button.hide()
                 self.key_bar.setPlaceholderText("Enter a keyword...")
+            case 7 | 8:
+                self.bruteforce_button.hide()
+                self.key_bar.setPlaceholderText("Enter a key...")
 
     def update_widget_style(self, widget, is_urgent):
         widget.setProperty("urgent", is_urgent)
@@ -70,16 +73,29 @@ class MainWindow(QMainWindow):
 
         match algorithm:
             case 1 :
-                if not key.isdigit() or not key:
+                if not key.isdigit() or not key or not plain_text.replace(" ", "").isalpha():
                     key_urgent = True
             case 2:
-                if key.isdigit() or not key:
+                if key.isdigit() or not key or not plain_text.replace(" ", "").isalpha():
                     key_urgent = True
             case 4 | 5 | 6:
-                if not key.isalpha() or not key :
+                if not key.isalpha() or not plain_text.replace(" ", "").isalpha():
                     key_urgent = True
+            case 7:
+                if not set(key).issubset({"0" , "1"}) or not key:
+                    key_urgent = True
+                if not set(plain_text).issubset({"0" , "1"}):
+                    input_urgent = True
+            case 8:
+                if not set(key).issubset({"0" , "1"}):
+                    key_urgent = True
+                if not set(plain_text).issubset({"0", "1"}):
+                    input_urgent = True
+                if not key:
+                    key_urgent = False
 
-        if not plain_text or not plain_text.replace(" ", "").isalpha():
+
+        if not plain_text:
             input_urgent = True
 
         if not key_urgent and not input_urgent:
@@ -147,6 +163,9 @@ class MainWindow(QMainWindow):
         self.drop_down_menu.addItem("Vigenère Cipher", 4)
         self.drop_down_menu.addItem("Vigenère auto (Plain) key", 5)
         self.drop_down_menu.addItem("Vigenère auto (Cipher) key", 6)
+        self.drop_down_menu.addItem("Vernam Cipher", 7)
+        self.drop_down_menu.addItem("One time pad Cipher", 8)
+
 
         #key_bar
         self.key_bar = QLineEdit()

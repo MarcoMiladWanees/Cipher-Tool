@@ -12,17 +12,10 @@ def vigenere_translator(text):
     return text
 
 def vigenere_key_generator(length,key):
-    key_map = vigenere_formatter(key)
-    key_map2 = key_map.copy()
-    key = []
-    len_key = math.ceil(length / len(key_map))
-
-    # generating key
-    for _ in range(len_key):
-        key_map2 = key_map.copy()
-        while key_map2:
-            key.append(key_map2[0])
-            del key_map2[0]
+    i = 0
+    while len(key) < length:
+        key += key[i % len(key)]
+        i += 1
 
     #translating key
     key = vigenere_translator(key)
