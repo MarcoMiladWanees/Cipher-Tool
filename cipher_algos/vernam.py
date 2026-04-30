@@ -1,4 +1,5 @@
 def vernam_cipherer(msg, key):
+    msg = msg.replace(" ", "")
     i = 0
     while len(key) < len(msg):
             key += key[i % len(key)]

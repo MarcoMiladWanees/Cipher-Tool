@@ -42,6 +42,10 @@ class Worker(QObject):
                 self.done_signal.emit(vernam_cipherer(input_text, key))
             case 8:
                 self.done_signal.emit(one_time_pad(input_text, key))
+            case 9:
+                self.done_signal.emit(rail_fence_encryptor(input_text, key))
+            case 10:
+                self.done_signal.emit(row_transposition_encryptor(input_text, key))
 
     def decrypt(self, input_text, key, algorithm):
         match algorithm:
@@ -61,6 +65,10 @@ class Worker(QObject):
                 self.done_signal.emit(vernam_cipherer(input_text, key))
             case 8:
                 self.done_signal.emit(one_time_pad(input_text, key))
+            case 9:
+                self.done_signal.emit(rail_fence_decryptor(input_text, key))
+            case 10:
+                self.done_signal.emit(row_transposition_decryptor(input_text, key))
 
     def bruteforce(self, input_text, algorithm):
         output = ""

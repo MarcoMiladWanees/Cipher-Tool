@@ -52,9 +52,12 @@ class MainWindow(QMainWindow):
             case 2 | 3 | 4 | 5 | 6:
                 self.bruteforce_button.hide()
                 self.key_bar.setPlaceholderText("Enter a keyword...")
-            case 7 | 8:
+            case 7 | 8 | 10:
                 self.bruteforce_button.hide()
                 self.key_bar.setPlaceholderText("Enter a key...")
+            case 9:
+                self.bruteforce_button.hide()
+                self.key_bar.setPlaceholderText("Enter a depth...")
 
     def update_widget_style(self, widget, is_urgent):
         widget.setProperty("urgent", is_urgent)
@@ -64,7 +67,7 @@ class MainWindow(QMainWindow):
 
     def handle_errors_send_data(self):
         self.output_bar.clear()
-        plain_text = self.input_bar.toPlainText()
+        plain_text = self.input_bar.toPlainText().strip().replace(" ", "")
         key = self.key_bar.text()
         algorithm = self.drop_down_menu.currentData()
         flag = False
@@ -72,16 +75,20 @@ class MainWindow(QMainWindow):
         input_urgent = False
 
         match algorithm:
-            case 1 :
-                if not key.isdigit() or not key or not plain_text.replace(" ", "").isalpha():
+            case 1:
+                if not key.isdigit() or not key:
                     key_urgent = True
+                if not plain_text.replace(" ", "").isalpha():
+                    input_urgent = True
             case 2:
-                if key.isdigit() or not key or not plain_text.replace(" ", "").isalpha():
+                if not key.isalpha() or not key :
                     key_urgent = True
-            case 4 | 5 | 6:
+                if not plain_text.replace(" ", "").isalpha():
+                    input_urgent = True
+            case 3 | 4 | 5 | 6:
                 if not key.isalpha() or not plain_text.replace(" ", "").isalpha():
                     key_urgent = True
-            case 7:
+            case 7 :
                 if not set(key).issubset({"0" , "1"}) or not key:
                     key_urgent = True
                 if not set(plain_text).issubset({"0" , "1"}):
@@ -93,7 +100,12 @@ class MainWindow(QMainWindow):
                     input_urgent = True
                 if not key:
                     key_urgent = False
-
+            case 9:
+                if not key or not key.isdigit() or not int(key) > 1:
+                    key_urgent = True
+            case 10:
+                if not key or key.isalpha() and key.isdigit():
+                    key_urgent = True
 
         if not plain_text:
             input_urgent = True
@@ -165,6 +177,8 @@ class MainWindow(QMainWindow):
         self.drop_down_menu.addItem("Vigenère auto (Cipher) key", 6)
         self.drop_down_menu.addItem("Vernam Cipher", 7)
         self.drop_down_menu.addItem("One time pad Cipher", 8)
+        self.drop_down_menu.addItem("Rail Fence Cipher", 9)
+        self.drop_down_menu.addItem("Row Transposition Cipher", 10)
 
 
         #key_bar

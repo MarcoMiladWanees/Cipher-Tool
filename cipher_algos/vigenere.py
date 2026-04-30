@@ -14,11 +14,8 @@ def vigenere_translator(text):
 def vigenere_key_generator(length,key):
     i = 0
     while len(key) < length:
-        key += key[i % len(key)]
+        key.append(key[i % len(key)])
         i += 1
-
-    #translating key
-    key = vigenere_translator(key)
 
     return key
 
@@ -45,6 +42,8 @@ def vigenere_encryptor(msg, key):
     msg = vigenere_formatter(msg)
     msg = vigenere_translator(msg)
     #handling key
+    key = vigenere_formatter(key)
+    key = vigenere_translator(key)
     key = vigenere_key_generator(len(msg),key)
 
     return vigenere_cipherer(msg, key)
@@ -54,6 +53,8 @@ def vigenere_decryptor(cipher, key):
     cipher = vigenere_formatter(cipher)
     cipher = vigenere_translator(cipher)
     # handling key
+    key = vigenere_formatter(key)
+    key = vigenere_translator(key)
     key = vigenere_key_generator(len(cipher), key)
 
     return vigenere_decipherer(cipher, key)

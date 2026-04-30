@@ -2,7 +2,6 @@ from pprint import pprint
 from tabulate import tabulate
 def rail_fence_settings(text, depth):
     text = text.replace(" ", "")
-
     #creating the fence
     fence = []
     for _ in range(depth):
@@ -35,6 +34,7 @@ def rail_fence_filler(text, fence ,depth):
 
 def rail_fence_encryptor(msg, depth):
     #setting things up
+    depth = int(depth)
     fence, msg = rail_fence_settings(msg, depth)
     msg = msg.lower()
 
@@ -52,6 +52,7 @@ def rail_fence_encryptor(msg, depth):
 
 def rail_fence_decryptor(cipher, depth):
     # setting things up
+    depth = int(depth)
     fence, cipher = rail_fence_settings(cipher, depth)
     cipher = cipher.upper()
 
