@@ -1,0 +1,175 @@
+/* =====================================================
+   1. GLOBAL APPLICATION – Dark Cryptographic Base
+===================================================== */
+
+QMainWindow {
+    background-color: #0D1117;   /* Deep graphite */
+    font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+    color: #C9D1D9;
+}
+
+
+/* =====================================================
+   2. GROUP BOX – Terminal Panels
+===================================================== */
+
+QGroupBox {
+    background-color: #161B22;   /* Panel tone */
+    border: 1px solid #30363D;
+    border-radius: 8px;
+    margin-top: 20px;
+    padding: 16px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #58A6FF;  /* Subtle blue accent */
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 14px;
+    padding: 0 6px;
+    color: #8B949E;
+}
+
+
+/* =====================================================
+   3. INPUT FIELDS – Cipher Console Style
+===================================================== */
+
+QLineEdit, QTextEdit {
+    background-color: #0D1117;
+    border: 1px solid #30363D;
+    border-radius: 6px;
+    padding: 10px;
+    color: #00FF9C;   /* Neon green data */
+    font-size: 13px;
+    selection-background-color: #238636;
+    selection-color: #FFFFFF;
+}
+
+QLineEdit:hover, QTextEdit:hover {
+    border: 1px solid #58A6FF;
+}
+
+/* Glow focus effect */
+QLineEdit:focus, QTextEdit:focus {
+    border: 1px solid #00FF9C;
+    background-color: #0D1117;
+}
+
+
+/* =====================================================
+   4. ERROR STATE – Critical Crypto Warning
+===================================================== */
+
+QLineEdit[urgent="true"], QTextEdit[urgent="true"] {
+    border: 1px solid #FF4D4D;
+    background-color: #1A0F12;
+    color: #FF7B72;
+}
+
+
+/* =====================================================
+   5. BUTTONS – Command Style
+===================================================== */
+
+QPushButton {
+    background-color: #161B22;
+    border: 1px solid #30363D;
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-weight: 600;
+    color: #C9D1D9;
+}
+
+QPushButton:hover {
+    border: 1px solid #00FF9C;
+    color: #00FF9C;
+}
+
+QPushButton:pressed {
+    background-color: #0D1117;
+    border: 1px solid #238636;
+}
+
+
+/* PRIMARY ACTION – Encrypt / Decrypt */
+QPushButton#primaryButton {
+    background-color: #238636;
+    color: #FFFFFF;
+    border: none;
+}
+
+QPushButton#primaryButton:hover {
+    background-color: #2EA043;
+}
+
+
+/* =====================================================
+   6. COMBOBOX – Algorithm Selector
+===================================================== */
+
+QComboBox {
+    border: 1px solid #30363D;
+    border-radius: 6px;
+    padding: 6px 14px;
+    background-color: #0D1117;
+    color: #C9D1D9;
+    min-height: 24px;
+}
+
+QComboBox:hover {
+    border-color: #58A6FF;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 28px;
+    border-left: 1px solid #30363D;
+}
+
+QComboBox::down-arrow {
+    image: url(assets/down-arrow-dark.png); /* Use light arrow icon */
+    width: 10px;
+    height: 10px;
+}
+
+
+/* Dropdown list */
+QAbstractItemView {
+    border: 1px solid #30363D;
+    background-color: #161B22;
+    selection-background-color: #238636;
+    selection-color: #FFFFFF;
+    color: #C9D1D9;
+    outline: none;
+}
+
+
+/* =====================================================
+   7. SCROLLBAR – Minimal Cyber Style
+===================================================== */
+
+QScrollBar:vertical {
+    border: none;
+    background: #0D1117;
+    width: 8px;
+    margin: 4px 0 4px 0;
+}
+
+QScrollBar::handle:vertical {
+    background: #30363D;
+    border-radius: 4px;
+    min-height: 20px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #00FF9C;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+}
