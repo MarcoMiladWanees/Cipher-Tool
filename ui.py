@@ -6,7 +6,7 @@ from   PyQt5.QtGui     import QIcon, QFont
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from   PyQt5.QtGui     import QPixmap
 
-from constants import UICONSTANTS
+from constants import UICONSTANTS, resource_path
 from Worker import Worker
 
 class MainWindow(QMainWindow):
@@ -68,7 +68,7 @@ class MainWindow(QMainWindow):
     def handle_errors_send_data(self):
         self.output_bar.clear()
         plain_text = self.input_bar.toPlainText().strip().replace(" ", "")
-        key = self.key_bar.text()
+        key = self.key_bar.text().strip().replace(" ", "")
         algorithm = self.drop_down_menu.currentData()
         flag = False
         key_urgent = False
@@ -78,16 +78,13 @@ class MainWindow(QMainWindow):
             case 1:
                 if not key.isdigit() or not key:
                     key_urgent = True
-                if not plain_text.replace(" ", "").isalpha():
+                if not plain_text.isalpha():
                     input_urgent = True
-            case 2:
+            case 2 | 3 | 4 | 5 | 6:
                 if not key.isalpha() or not key :
                     key_urgent = True
-                if not plain_text.replace(" ", "").isalpha():
+                if not plain_text.isalpha():
                     input_urgent = True
-            case 3 | 4 | 5 | 6:
-                if not key.isalpha() or not plain_text.replace(" ", "").isalpha():
-                    key_urgent = True
             case 7 :
                 if not set(key).issubset({"0" , "1"}) or not key:
                     key_urgent = True
@@ -136,9 +133,9 @@ class MainWindow(QMainWindow):
 
     def initUI(self):
         #window setup
-        self.setWindowTitle("Cipher Tool")
+        self.setWindowTitle("Kryptos")
+        self.setWindowIcon(QIcon(resource_path('assets/icon.png')))
         self.setFixedSize(UICONSTANTS.WINOW_WIDTH,UICONSTANTS.WINOW_HEIGHT)
-        self.setWindowIcon(QIcon('assets/icon.png'))
 
         #main layout and widget
         self.main_widget = QWidget()
@@ -193,6 +190,10 @@ class MainWindow(QMainWindow):
 
         #bruteforce button
         self.bruteforce_button = QPushButton("Bruteforce")
+
+        self.encrypt_button.setObjectName("encryptButton")
+        self.decrypt_button.setObjectName("decryptButton")
+        self.bruteforce_button.setObjectName("bruteforceButton")
 
         #middle layout
         self.operations_layout = QVBoxLayout()

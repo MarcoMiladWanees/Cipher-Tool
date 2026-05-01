@@ -1,4 +1,6 @@
 from PyQt5.QtWidgets import QApplication
+
+from constants import resource_path
 from ui import MainWindow
 import sys
 
@@ -6,8 +8,8 @@ import sys
 def main():
     app = QApplication(sys.argv)
 
-    with open(r"D:\PyCharm 2025.3.3\Projects\Cipher-Tool\assets\style.css", "r") as file:
-        app.setStyleSheet(file.read())
+    with open(resource_path('assets/style.css'), 'r') as f:
+        app.setStyleSheet(f.read())
 
     window = MainWindow()
     window.show()

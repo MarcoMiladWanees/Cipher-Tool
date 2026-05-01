@@ -1,27 +1,27 @@
 /* =====================================================
-   1. GLOBAL APPLICATION – Dark Cryptographic Base
+   1. GLOBAL APPLICATION – Dark Kryptos Base
 ===================================================== */
 
 QMainWindow {
-    background-color: #0D1117;   /* Deep graphite */
+    background-color: #0A1A2A;   /* Deep navy */
     font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
-    color: #C9D1D9;
+    color: #E8F4F8;
 }
 
 
 /* =====================================================
-   2. GROUP BOX – Terminal Panels
+   2. GROUP BOX – Kryptos Panels
 ===================================================== */
 
 QGroupBox {
-    background-color: #161B22;   /* Panel tone */
-    border: 1px solid #30363D;
+    background-color: #0F2336;   /* Panel tone */
+    border: 1px solid #1F3447;
     border-radius: 8px;
     margin-top: 20px;
     padding: 16px;
     font-weight: 600;
     font-size: 13px;
-    color: #58A6FF;  /* Subtle blue accent */
+    color: #00D4FF;  /* Kryptos cyan accent */
 }
 
 QGroupBox::title {
@@ -29,7 +29,7 @@ QGroupBox::title {
     subcontrol-position: top left;
     left: 14px;
     padding: 0 6px;
-    color: #8B949E;
+    color: #6B8A99;
 }
 
 
@@ -38,24 +38,30 @@ QGroupBox::title {
 ===================================================== */
 
 QLineEdit, QTextEdit {
-    background-color: #0D1117;
-    border: 1px solid #30363D;
+    background-color: #152A3D;
+    border: 1px solid #1F3447;
     border-radius: 6px;
     padding: 10px;
-    color: #00FF9C;   /* Neon green data */
+    color: #E8F4F8;
     font-size: 13px;
-    selection-background-color: #238636;
-    selection-color: #FFFFFF;
+    selection-background-color: #00D4FF;
+    selection-color: #0A1A2A;
 }
 
 QLineEdit:hover, QTextEdit:hover {
-    border: 1px solid #58A6FF;
+    border: 1px solid #00D4FF;
 }
 
 /* Glow focus effect */
 QLineEdit:focus, QTextEdit:focus {
-    border: 1px solid #00FF9C;
-    background-color: #0D1117;
+    border: 1px solid #00D4FF;
+    background-color: #152A3D;
+}
+
+/* NEW: Placeholder text styling */
+QLineEdit::placeholder {
+    color: #3D5A6E;
+    font-style: italic;
 }
 
 
@@ -64,9 +70,9 @@ QLineEdit:focus, QTextEdit:focus {
 ===================================================== */
 
 QLineEdit[urgent="true"], QTextEdit[urgent="true"] {
-    border: 1px solid #FF4D4D;
-    background-color: #1A0F12;
-    color: #FF7B72;
+    border: 1px solid #E05272;
+    background-color: #1A1024;
+    color: #F0A0B5;
 }
 
 
@@ -75,35 +81,122 @@ QLineEdit[urgent="true"], QTextEdit[urgent="true"] {
 ===================================================== */
 
 QPushButton {
-    background-color: #161B22;
-    border: 1px solid #30363D;
+    background-color: #0F2336;
+    border: 1px solid #1F3447;
     border-radius: 6px;
     padding: 8px 18px;
     font-weight: 600;
-    color: #C9D1D9;
+    color: #E8F4F8;
 }
 
 QPushButton:hover {
-    border: 1px solid #00FF9C;
-    color: #00FF9C;
+    border: 1px solid #00D4FF;
+    color: #00D4FF;
 }
 
 QPushButton:pressed {
-    background-color: #0D1117;
-    border: 1px solid #238636;
+    background-color: #0A1A2A;
+    border: 1px solid #009FBE;
 }
 
-
-/* PRIMARY ACTION – Encrypt / Decrypt */
+/* PRIMARY ACTION – Encrypt */
 QPushButton#primaryButton {
-    background-color: #238636;
-    color: #FFFFFF;
+    background-color: #00D4FF;
+    color: #0A1A2A;
     border: none;
 }
 
 QPushButton#primaryButton:hover {
-    background-color: #2EA043;
+    background-color: #38E3FF;
 }
+
+/* NEW: ENCRYPT BUTTON – Kryptos Cyan */
+QPushButton#encryptButton {
+    background-color: #00D4FF;
+    color: #0A1A2A;
+    border: none;
+    font-weight: 700;
+}
+
+QPushButton#encryptButton:hover {
+    background-color: #38E3FF;
+}
+
+QPushButton#encryptButton:pressed {
+    background-color: #009FBE;
+}
+
+/* NEW: DECRYPT BUTTON – Deep Blue */
+QPushButton#decryptButton {
+    background-color: #1A6FB5;
+    color: #E8F4F8;
+    border: none;
+    font-weight: 700;
+}
+
+QPushButton#decryptButton:hover {
+    background-color: #2488D4;
+}
+
+QPushButton#decryptButton:pressed {
+    background-color: #145A8F;
+}
+
+/* BRUTEFORCE BUTTON – Warning Rose */
+QPushButton#bruteforceButton {
+    background-color: #1A1024;
+    color: #E05272;
+    border: 1px solid #E05272;
+    font-weight: 700;
+}
+
+QPushButton#bruteforceButton:hover {
+    background-color: #241530;
+    color: #F0A0B5;
+    border: 1px solid #F0A0B5;
+}
+
+QPushButton#bruteforceButton:pressed {
+    background-color: #1A1024;
+    border: 1px solid #C74460;
+}
+
+/* NEW: COPY BUTTON – Subtle Utility */
+QPushButton#copyButton {
+    background-color: transparent;
+    color: #6B8A99;
+    border: 1px solid #1F3447;
+    font-weight: 600;
+}
+
+QPushButton#copyButton:hover {
+    color: #00D4FF;
+    border: 1px solid #00D4FF;
+}
+
+QPushButton#copyButton:pressed {
+    color: #009FBE;
+    border: 1px solid #009FBE;
+}
+
+/* CLEAR BUTTON – replace the clear button block */
+QPushButton#clearButton {
+    background-color: transparent;
+    color: #6B8A99;
+    border: 1px solid #1F3447;
+    font-weight: 600;
+}
+
+QPushButton#clearButton:hover {
+    color: #E05272;
+    border: 1px solid #E05272;
+}
+
+QPushButton#clearButton:pressed {
+    color: #C74460;
+    border: 1px solid #C74460;
+}
+
 
 
 /* =====================================================
@@ -111,27 +204,27 @@ QPushButton#primaryButton:hover {
 ===================================================== */
 
 QComboBox {
-    border: 1px solid #30363D;
+    border: 1px solid #1F3447;
     border-radius: 6px;
     padding: 6px 14px;
-    background-color: #0D1117;
-    color: #C9D1D9;
+    background-color: #152A3D;
+    color: #E8F4F8;
     min-height: 24px;
 }
 
 QComboBox:hover {
-    border-color: #58A6FF;
+    border-color: #00D4FF;
 }
 
 QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 28px;
-    border-left: 1px solid #30363D;
+    border-left: 1px solid #1F3447;
 }
 
 QComboBox::down-arrow {
-    image: url(assets/down-arrow-dark.png); /* Use light arrow icon */
+    image: url(assets/down-arrow-dark.png); /* Use cyan or light arrow icon */
     width: 10px;
     height: 10px;
 }
@@ -139,11 +232,11 @@ QComboBox::down-arrow {
 
 /* Dropdown list */
 QAbstractItemView {
-    border: 1px solid #30363D;
-    background-color: #161B22;
-    selection-background-color: #238636;
-    selection-color: #FFFFFF;
-    color: #C9D1D9;
+    border: 1px solid #1F3447;
+    background-color: #0F2336;
+    selection-background-color: #00D4FF;
+    selection-color: #0A1A2A;
+    color: #E8F4F8;
     outline: none;
 }
 
@@ -154,22 +247,282 @@ QAbstractItemView {
 
 QScrollBar:vertical {
     border: none;
-    background: #0D1117;
+    background: #0A1A2A;
     width: 8px;
     margin: 4px 0 4px 0;
 }
 
 QScrollBar::handle:vertical {
-    background: #30363D;
+    background: #1F3447;
     border-radius: 4px;
     min-height: 20px;
 }
 
 QScrollBar::handle:vertical:hover {
-    background: #00FF9C;
+    background: #00D4FF;
 }
 
 QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical {
     height: 0px;
+}
+
+
+/* =====================================================
+   8. NEW: TOOLTIPS – Kryptos Info Style
+===================================================== */
+
+QToolTip {
+    background-color: #0F2336;
+    color: #E8F4F8;
+    border: 1px solid #00D4FF;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   9. NEW: LABELS – Text Hierarchy
+===================================================== */
+
+/* Title labels */
+QLabel#titleLabel {
+    color: #00D4FF;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* Subtitle / description labels */
+QLabel#subtitleLabel {
+    color: #6B8A99;
+    font-size: 12px;
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Status / info labels */
+QLabel#statusLabel {
+    color: #4ADE80;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Error labels */
+QLabel#errorLabel {
+    color: #E05272;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Muted / secondary labels */
+QLabel#mutedLabel {
+    color: #3D5A6E;
+    font-size: 11px;
+}
+
+
+/* =====================================================
+   10. NEW: STATUS BAR – Bottom Info Strip
+===================================================== */
+
+QStatusBar {
+    background-color: #0F2336;
+    color: #6B8A99;
+    border-top: 1px solid #1F3447;
+    font-size: 11px;
+    padding: 4px 12px;
+}
+
+QStatusBar::item {
+    border: none;
+}
+
+
+/* =====================================================
+   11. NEW: MENU BAR – Top Navigation (for v4)
+===================================================== */
+
+QMenuBar {
+    background-color: #0A1A2A;
+    color: #E8F4F8;
+    border-bottom: 1px solid #1F3447;
+    padding: 2px 0px;
+}
+
+QMenuBar::item {
+    padding: 6px 14px;
+    border-radius: 4px;
+}
+
+QMenuBar::item:selected {
+    background-color: #152A3D;
+    color: #00D4FF;
+}
+
+QMenu {
+    background-color: #0F2336;
+    border: 1px solid #1F3447;
+    border-radius: 6px;
+    padding: 4px 0px;
+}
+
+QMenu::item {
+    padding: 8px 24px;
+    color: #E8F4F8;
+}
+
+QMenu::item:selected {
+    background-color: #152A3D;
+    color: #00D4FF;
+}
+
+QMenu::separator {
+    height: 1px;
+    background-color: #1F3447;
+    margin: 4px 12px;
+}
+
+
+/* =====================================================
+   12. NEW: TAB WIDGET – For Future Cipher Pages (v4)
+===================================================== */
+
+QTabWidget::pane {
+    border: 1px solid #1F3447;
+    border-radius: 6px;
+    background-color: #0F2336;
+}
+
+QTabBar::tab {
+    background-color: #0A1A2A;
+    color: #6B8A99;
+    padding: 8px 20px;
+    margin-right: 2px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border: 1px solid #1F3447;
+    border-bottom: none;
+}
+
+QTabBar::tab:selected {
+    background-color: #0F2336;
+    color: #00D4FF;
+    border-bottom: 2px solid #00D4FF;
+}
+
+QTabBar::tab:hover:!selected {
+    color: #E8F4F8;
+    background-color: #152A3D;
+}
+
+
+/* =====================================================
+   13. NEW: TREE WIDGET – Sidebar Nav (for v4)
+===================================================== */
+
+QTreeWidget {
+    background-color: #0A1A2A;
+    border: none;
+    color: #E8F4F8;
+    font-size: 13px;
+    outline: none;
+}
+
+QTreeWidget::item {
+    padding: 10px 14px;
+    border-radius: 4px;
+}
+
+QTreeWidget::item:selected {
+    background-color: #152A3D;
+    color: #00D4FF;
+    border-left: 3px solid #00D4FF;
+}
+
+QTreeWidget::item:hover:!selected {
+    background-color: #0F2336;
+}
+
+QTreeWidget::branch {
+    background-color: #0A1A2A;
+}
+
+QHeaderView::section {
+    background-color: #0A1A2A;
+    color: #6B8A99;
+    border: none;
+    padding: 6px 14px;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+
+/* =====================================================
+   14. NEW: SPLITTER – Panel Divider (for v4)
+===================================================== */
+
+QSplitter::handle {
+    background-color: #1F3447;
+    width: 2px;
+}
+
+QSplitter::handle:hover {
+    background-color: #00D4FF;
+}
+
+
+/* =====================================================
+   15. NEW: SPINBOX – Numeric Key Inputs (for v4)
+===================================================== */
+
+QSpinBox {
+    background-color: #152A3D;
+    border: 1px solid #1F3447;
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: #E8F4F8;
+    font-size: 13px;
+}
+
+QSpinBox:hover {
+    border: 1px solid #00D4FF;
+}
+
+QSpinBox:focus {
+    border: 1px solid #00D4FF;
+}
+
+QSpinBox::up-button, QSpinBox::down-button {
+    background-color: #0F2336;
+    border: none;
+    width: 20px;
+}
+
+QSpinBox::up-button:hover, QSpinBox::down-button:hover {
+    background-color: #152A3D;
+}
+
+
+/* =====================================================
+   16. NEW: DISABLED STATE – Locked Elements
+===================================================== */
+
+QPushButton:disabled {
+    background-color: #0F2336;
+    color: #3D5A6E;
+    border: 1px solid #1F3447;
+}
+
+QLineEdit:disabled, QTextEdit:disabled {
+    background-color: #0A1A2A;
+    color: #3D5A6E;
+    border: 1px solid #152A3D;
+}
+
+QComboBox:disabled {
+    background-color: #0A1A2A;
+    color: #3D5A6E;
+    border: 1px solid #152A3D;
 }

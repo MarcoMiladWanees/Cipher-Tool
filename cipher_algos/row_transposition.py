@@ -2,9 +2,8 @@ from cipher_algos.letters_dic import letter_to_number
 import math
 
 def row_transposition_formatter(msg, key):
-    key = key.replace(' ', '')
-    key = key.lower()
-    key = list(key)
+    key = key.replace(' ', '').lower()
+    key = list(dict.fromkeys(key))
     msg = msg.replace(' ', '')
     msg = list(msg)
     for i in range(len(key)):
