@@ -1,5 +1,5 @@
-from cipher_algos.letters_dic import letter_to_number, number_to_letter
-import math
+from assets.letters_dic import letter_to_number, number_to_letter
+
 
 def vigenere_formatter(text):
     text = text.lower()

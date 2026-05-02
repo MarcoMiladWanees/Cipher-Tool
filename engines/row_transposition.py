@@ -1,4 +1,4 @@
-from cipher_algos.letters_dic import letter_to_number
+from assets.letters_dic import letter_to_number
 import math
 
 def row_transposition_formatter(msg, key):

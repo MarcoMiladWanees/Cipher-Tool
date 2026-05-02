@@ -37,7 +37,7 @@ QGroupBox::title {
    3. INPUT FIELDS – Cipher Console Style
 ===================================================== */
 
-QLineEdit, QTextEdit {
+QLineEdit, QTextEdit, QPlainTextEdit {
     background-color: #152A3D;
     border: 1px solid #1F3447;
     border-radius: 6px;
@@ -48,18 +48,18 @@ QLineEdit, QTextEdit {
     selection-color: #0A1A2A;
 }
 
-QLineEdit:hover, QTextEdit:hover {
+QLineEdit:hover, QTextEdit:hover, QPlainTextEdit:hover {
     border: 1px solid #00D4FF;
 }
 
 /* Glow focus effect */
-QLineEdit:focus, QTextEdit:focus {
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
     border: 1px solid #00D4FF;
     background-color: #152A3D;
 }
 
 /* NEW: Placeholder text styling */
-QLineEdit::placeholder {
+QLineEdit::placeholder, QTextEdit::placeholder, QPlainTextEdit::placeholder {
     color: #3D5A6E;
     font-style: italic;
 }

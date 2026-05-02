@@ -1,28 +1,14 @@
 from PyQt5.QtCore import QObject, pyqtSignal
-from cipher_algos.ceaser import *
-from cipher_algos.mono_alphabetic import *
-from cipher_algos.playfair import playfair_encryptor, playfair_decryptor
-from cipher_algos.vigenere import *
-from cipher_algos.vernam import *
-from cipher_algos.one_time_pad import *
-from cipher_algos.rail_fence import *
-from cipher_algos.row_transposition import *
+from engines.caesar import *
+from engines.mono_alphabetic import *
+from engines.playfair import playfair_encryptor, playfair_decryptor
+from engines.vigenere import *
+from engines.vernam import *
+from engines.one_time_pad import *
+from engines.rail_fence import *
+from engines.row_transposition import *
 
 class Worker(QObject):
-
-    done_signal = pyqtSignal(str)
-
-    def __init__(self):
-        super().__init__()
-
-    def router(self, input_text, key, algorithm, mode):
-        match mode:
-            case 1:
-                self.encrypt(input_text, key, algorithm)
-            case 2:
-                self.decrypt(input_text, key, algorithm)
-            case 3:
-                self.bruteforce(input_text, algorithm)
 
     def encrypt(self, input_text, key, algorithm):
         match algorithm:
@@ -77,4 +63,3 @@ class Worker(QObject):
                 for k in range(26):
                     output += f"\n[{k}] {ceaser_decryptor(input_text, k)}\n"
                     output += "--------------------------------------"
-        self.done_signal.emit(output)
