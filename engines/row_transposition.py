@@ -1,74 +1,73 @@
-from assets.letters_dic import letter_to_number
 import math
 
 def row_transposition_formatter(msg, key):
-    key = key.replace(' ', '').lower()
-    key = list(dict.fromkeys(key))
-    msg = msg.replace(' ', '')
     msg = list(msg)
-    for i in range(len(key)):
-        if key[i].isalpha():
-           key[i] = letter_to_number[key[i]]
-
-
+    key = list(key.lower().replace(" ", ""))
     return msg, key
 
-def row_transposition_mapper(text, key):
+def row_transposition_mapper(rows, columns):
+    return [["" for _ in range(columns)] for _ in range(rows)]
 
-    rows = math.ceil(len(text) / len(key))
-    key_map = []
-    for _ in range(rows):
-        key_map.append([" " for _ in range(len(key))])
-    return key_map
+def row_transposition_column_order(key):
+    return sorted(range(len(key)), key=lambda i: key[i])
 
 def row_transposition_encryptor(msg, key):
     msg, key = row_transposition_formatter(msg, key)
-    key_map = row_transposition_mapper(msg, key)
 
-    #filling the key map
-    for row in key_map:
-        for i in range(len(key)):
-            if msg:
-                row[i] = msg[0]
-                del msg[0]
-            else:
-                row[i] = "x"
+    rows = math.ceil(len(msg) / len(key))
+    columns = len(key)
 
-    #adding the key row to the keymap
-    key_map.insert(0,list(key))
+    # padding
+    while len(msg) < (rows * columns):
+        msg.append("x")
 
-    #extracting the cipher from the keymap
-    key = sorted(key)
-    cipher = ""
-    column = 0
-    while column < len(key):
-        for row in range(1,len(key_map)):
-            cipher += key_map[row][key_map[0].index(key[column])]
-        column += 1
+    key_map = row_transposition_mapper(rows, columns)
 
-    return cipher.upper()
+    # fill row-wise
+    index = 0
+    for row in range(rows):
+        for column in range(columns):
+            key_map[row][column] = msg[index]
+            index += 1
+
+    # read columns in sorted-key order
+    cipher = []
+    order = row_transposition_column_order(key)
+
+    for column in order:
+        for row in range(rows):
+            cipher.append(key_map[row][column])
+
+    return "".join(cipher)
 
 def row_transposition_decryptor(cipher, key):
     cipher, key = row_transposition_formatter(cipher, key)
-    key_map = row_transposition_mapper(cipher, key)
 
-    # adding the key row to the keymap
-    key_map.insert(0, key)
+    columns = len(key)
 
-    #filling the key map
-    key = sorted(key)
-    column = 0
-    i = 0
-    while column < len(key):
-        for row in range(1, len(key_map)):
-            key_map[row][key_map[0].index(key[column])] = cipher[i]
-            i += 1
-        column += 1
+    # ciphertext length must perfectly fill rectangle
+    if len(cipher) % columns != 0:
+        raise ValueError(
+            "Ciphertext length must be divisible by key length."
+        )
 
-    #extracting the message from the key map
-    msg = ""
-    for row in range(1, len(key_map)):
-        for i in range(len(key)):
-            msg += key_map[row][i]
-    return msg.lower()
+    rows = len(cipher) // columns
 
+    key_map = row_transposition_mapper(rows, columns)
+
+    # fill columns in sorted-key order
+    order = row_transposition_column_order(key)
+
+    index = 0
+    for column in order:
+        for row in range(rows):
+            key_map[row][column] = cipher[index]
+            index += 1
+
+    # read row-wise
+    msg = []
+    for row in range(rows):
+        for column in range(columns):
+            msg.append(key_map[row][column])
+
+    return "".join(msg)

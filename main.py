@@ -1,5 +1,4 @@
 from PyQt5.QtWidgets import QApplication
-
 from app import MainWindow
 from constants import resource_path
 import sys

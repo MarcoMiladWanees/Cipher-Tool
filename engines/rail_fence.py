@@ -1,22 +1,22 @@
-from pprint import pprint
-from tabulate import tabulate
-def rail_fence_settings(text, depth):
-    text = text.replace(" ", "")
+
+def rail_fence_settings(columns, depth):
     #creating the fence
     fence = []
     for _ in range(depth):
-        fence.append(["" for _ in range(len(text))])
+        fence.append( ["" for _ in range(columns) ] )
 
-    return fence, text
+    return fence
 
 def rail_fence_filler(text, fence ,depth):
     # filling the fence
     rows = [i for i in range(depth)]
     column = 0
+
     for row in rows:
         if column < len(text):
             fence[row][column] = text[column]
             column += 1
+
     while column < len(text):
         for row in reversed(rows[: -1]):
             if column < len(text):
@@ -24,6 +24,7 @@ def rail_fence_filler(text, fence ,depth):
                 column += 1
             else:
                 break
+
         for row in rows[1:]:
             if column < len(text):
                 fence[row][column] = text[column]
@@ -34,9 +35,7 @@ def rail_fence_filler(text, fence ,depth):
 
 def rail_fence_encryptor(msg, depth):
     #setting things up
-    depth = int(depth)
-    fence, msg = rail_fence_settings(msg, depth)
-    msg = msg.lower()
+    fence = rail_fence_settings( len(msg) , depth )
 
     #filling the fence
     fence = rail_fence_filler(msg, fence, depth)
@@ -48,16 +47,14 @@ def rail_fence_encryptor(msg, depth):
             if item != "":
                 cipher.append(item)
 
-    return "".join(cipher).upper()
+    return "".join(cipher)
 
 def rail_fence_decryptor(cipher, depth):
     # setting things up
-    depth = int(depth)
-    fence, cipher = rail_fence_settings(cipher, depth)
-    cipher = cipher.upper()
+    fence = rail_fence_settings( len(cipher) , depth )
 
     # filling the fence
-    filler = "".join(["X" for _ in range(len(cipher))])
+    filler = "".join( ["X" for _ in range( len(cipher) )] )
     fence = rail_fence_filler(filler, fence, depth)
 
     column = 0
@@ -74,4 +71,4 @@ def rail_fence_decryptor(cipher, depth):
             if row[i]:
                 msg.append(row[i])
 
-    return "".join(msg).lower()
+    return "".join(msg)

@@ -12,18 +12,21 @@ from pages.vigenère_page import VigenerePage
 CLASSICAL_REGISTRY = {
     "Substitution Ciphers": [
         ("Caesar Cipher", "caesar", CaesarPage),
-        ("Monoalphabetic", "mono", MonoPage),
-        ("Playfair", "playfair", PlayfairPage),
+        ("Monoalphabetic Cipher", "mono", MonoPage),
+        ("Playfair Cipher", "playfair", PlayfairPage),
         ("Vigenère Cipher", "vigenere", VigenerePage),
         ("Vigenère Autokey — Plaintext", "vigenere_auto_p", VigenereAutoPlainPage),
         ("Vigenère Autokey — Ciphertext", "vigenere_auto_c", VigenereAutoCipherPage),
     ],
     "Transposition Ciphers": [
-        ("Rail Fence", "railfence", RailFencePage),
-        ("Row Transposition", "rowtrans", RowTransPage),
+        ("Rail Fence Cipher", "railfence", RailFencePage),
+        ("Row Transposition Cipher", "rowtrans", RowTransPage),
     ],
     "Stream Ciphers": [
-        ("Vernam", "vernam", VernamPage),
+        ("Vernam Cipher", "vernam", VernamPage),
         ("One Time Pad", "otp", OneTimePadPage),
     ]
 }
+
+
+PAGES_DIC= {}

@@ -1,26 +1,31 @@
-import sys
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QLabel,
-                             QPushButton, QCheckBox, QWidget, QVBoxLayout, QRadioButton, QButtonGroup, QLineEdit,
-                             QHBoxLayout, QComboBox, QGroupBox, QTextEdit, QPlainTextEdit, QSlider, QSpinBox)
-from   PyQt5.QtGui     import QIcon, QFont
-from PyQt5.QtCore import Qt, QThread, pyqtSignal
-from   PyQt5.QtGui     import QPixmap
-
-from constants import UICONSTANTS, resource_path
-
+from PyQt5.QtCore import Qt, QEventLoop, QTimer
+from PyQt5.QtWidgets import (QLabel,
+                             QPushButton, QWidget, QVBoxLayout, QLineEdit,
+                             QHBoxLayout, QPlainTextEdit, QSlider, QSpinBox, QGroupBox, QFrame, QApplication)
+import time
+# the 5 that validate like the base page: Mono, playfair, vigenere and its types
 class BasePage(QWidget):
     def __init__(self, cipher_name, cipher_description):
         super().__init__()
         self.cipher_name = cipher_name
         self.cipher_description = cipher_description
-
+        self.input_error = False
+        self.key_error = False
+        self.error = False
         self.initUI()
-
         self.setLayout(self.main_layout)
 
+        #button signals
+        self.copy_button.clicked.connect(self.copy)
+        self.clear_button.clicked.connect(self.clear)
+        self.swap_button.clicked.connect(self.swap)
+        self.encrypt_button.clicked.connect(self.encrypt)
+        self.decrypt_button.clicked.connect(self.decrypt)
+
     def initUI(self):
-        #main layout
         self.main_layout = QVBoxLayout()
+        self.main_layout.setSpacing(20)
+        self.main_layout.setContentsMargins(24, 24, 24, 24)
 
         #the 4 big layouts
         self.build_header()
@@ -30,8 +35,13 @@ class BasePage(QWidget):
 
         #adding layputs to the main layout
         self.main_layout.addLayout(self.header_layout)
+        self.main_layout.addSpacing(20)
+        self.main_layout.addWidget(self.create_seperator())
         self.main_layout.addLayout(self.parameters_layout)
+        self.main_layout.addWidget(self.create_seperator())
+        self.main_layout.addSpacing(20)
         self.main_layout.addLayout(self.io_layout)
+        self.main_layout.addSpacing(20)
         self.main_layout.addLayout(self.buttons_layout)
 
     def build_header(self):
@@ -40,7 +50,7 @@ class BasePage(QWidget):
 
         #defining the widgets
         self.title_label = QLabel(self.cipher_name)
-        self.title_label.setObjectName("title_label")
+        self.title_label.setObjectName("titleLabel")
         self.description_label = QLabel(self.cipher_description)
         self.description_label.setObjectName("subtitleLabel")
 
@@ -56,14 +66,26 @@ class BasePage(QWidget):
         #defining the io layout
         self.io_layout = QHBoxLayout()
 
-        #defining widgets
+        #input
+        self.input_group = QGroupBox("Input")
+        self.input_layout = QVBoxLayout()
         self.input_bar = QPlainTextEdit()
+        self.input_bar.setPlaceholderText("Enter text here...")
+        self.input_layout.addWidget(self.input_bar)
+        self.input_group.setLayout(self.input_layout)
+
+        #output
+        self.output_group = QGroupBox("Output")
+        self.output_layout = QVBoxLayout()
         self.output_bar = QPlainTextEdit()
         self.output_bar.setReadOnly(True)
+        self.output_bar.setPlaceholderText("Result appears here")
+        self.output_layout.addWidget(self.output_bar)
+        self.output_group.setLayout(self.output_layout)
 
         #adding to the io layout
-        self.io_layout.addWidget(self.input_bar)
-        self.io_layout.addWidget(self.output_bar)
+        self.io_layout.addWidget(self.input_group)
+        self.io_layout.addWidget(self.output_group)
 
     def build_buttons(self):
         self.buttons_layout = QHBoxLayout()
@@ -101,6 +123,7 @@ class BasePage(QWidget):
 
         # label
         self.key_label = QLabel("Shift:")
+        self.key_label.setObjectName("paramLabel")
 
         # slider
         self.key_slider = QSlider(Qt.Horizontal)
@@ -131,3 +154,68 @@ class BasePage(QWidget):
     def add_extra_buttons(self):
         pass
 
+    def create_seperator(self):
+        line = QFrame()
+        line.setFrameShape(QFrame.HLine)
+        line.setFixedHeight(1)
+        line.setStyleSheet("background-color: #1F3447;")
+        return line
+
+    def copy(self):
+        text = self.output_bar.toPlainText()
+        clipboard = QApplication.clipboard()
+        clipboard.setText(text)
+
+        self.copy_button.setText("copied✔️")
+        self.copy_button.setDisabled(True)
+        loop = QEventLoop()
+        QTimer.singleShot(5000, loop.quit)
+        loop.exec_()
+        self.copy_button.setDisabled(False)
+        self.copy_button.setText("📋 Copy")
+        return
+
+    def clear(self):
+        self.input_bar.clear()
+        self.output_bar.clear()
+
+    def swap(self):
+        text = self.output_bar.toPlainText()
+        self.input_bar.clear()
+        self.input_bar.setPlainText(text)
+        self.output_bar.clear()
+
+    def encrypt(self):
+        pass
+
+    def decrypt(self):
+        pass
+
+    def update_widget_style(self, widget, is_urgent):
+        widget.setProperty("urgent", is_urgent)
+        widget.style().unpolish(widget)
+        widget.style().polish(widget)
+        widget.update()
+
+    def update_ui(self):
+        self.input_bar.textChanged.connect(self.validate)
+        self.key_bar.textChanged.connect(self.validate)
+
+    def validate(self):
+        self.error = False
+        self.input_error = False
+        self.key_error = False
+        text = self.input_bar.toPlainText()
+        key = self.key_bar.text()
+
+        if not text:
+            self.input_error = True
+
+        if not key:
+            self.key_error = True
+
+        self.update_widget_style(self.input_bar, self.input_error)
+        self.update_widget_style(self.key_bar, self.key_error)
+
+        if self.input_error or self.key_error:
+            self.error = True

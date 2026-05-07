@@ -69,7 +69,7 @@ QLineEdit::placeholder, QTextEdit::placeholder, QPlainTextEdit::placeholder {
    4. ERROR STATE – Critical Crypto Warning
 ===================================================== */
 
-QLineEdit[urgent="true"], QTextEdit[urgent="true"] {
+QLineEdit[urgent="true"], QTextEdit[urgent="true"], QPlainTextEdit[urgent="true"] {
     border: 1px solid #E05272;
     background-color: #1A1024;
     color: #F0A0B5;
@@ -289,14 +289,14 @@ QToolTip {
 /* Title labels */
 QLabel#titleLabel {
     color: #00D4FF;
-    font-size: 18px;
+    font-size: 30px;
     font-weight: 700;
 }
 
 /* Subtitle / description labels */
 QLabel#subtitleLabel {
     color: #6B8A99;
-    font-size: 12px;
+    font-size: 25px;
     font-weight: 400;
     font-style: italic;
 }
@@ -319,6 +319,12 @@ QLabel#errorLabel {
 QLabel#mutedLabel {
     color: #3D5A6E;
     font-size: 11px;
+}
+
+QLabel#paramLabel {
+    color: #6B8A99;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 
@@ -416,22 +422,24 @@ QTabBar::tab:hover:!selected {
     background-color: #152A3D;
 }
 
-
 /* =====================================================
-   13. NEW: TREE WIDGET – Sidebar Nav (for v4)
+   SIDEBAR – Navigation Tree
 ===================================================== */
 
 QTreeWidget {
     background-color: #0A1A2A;
     border: none;
-    color: #E8F4F8;
-    font-size: 13px;
     outline: none;
+    padding: 8px 4px;
+    font-family: "Segoe UI", sans-serif;
 }
 
 QTreeWidget::item {
-    padding: 10px 14px;
+    padding: 8px 12px;
     border-radius: 4px;
+    margin: 1px 6px;
+    color: #E8F4F8;
+    font-size: 14px;
 }
 
 QTreeWidget::item:selected {
@@ -442,10 +450,20 @@ QTreeWidget::item:selected {
 
 QTreeWidget::item:hover:!selected {
     background-color: #0F2336;
+    color: #00D4FF;
 }
 
 QTreeWidget::branch {
     background-color: #0A1A2A;
+    border: none;
+}
+
+QTreeWidget::branch:has-children:closed {
+    image: none;
+}
+
+QTreeWidget::branch:has-children:open {
+    image: none;
 }
 
 QHeaderView::section {

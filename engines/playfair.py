@@ -1,123 +1,113 @@
 import string
 
-def construct_key_map(key):
-    key_map = []
-    key = key.lower()
-    for i in range(5):
-        key_map.append([0, 0, 0, 0, 0])
-    key = key.replace(' ', '')
-    key = key.replace('j', '')
-    key = list(key)
-    key = list(dict.fromkeys(key))
-    remaining_letters = [l for l in string.ascii_lowercase if l not in key]
-    remaining_letters.remove('j')
-    for i in range(5):
-        for j in range(5):
-            if key:
-                key_map[i][j] = (key[0])
-                del key[0]
-            else:
-                break
-    for i in range(5):
-        for j in range(5):
-            if key_map[i][j] == 0:
-                key_map[i][j] = remaining_letters[0]
-                del remaining_letters[0]
-            else:
-                continue
+def playfair_grid_maker(key):
+    key = key.lower().strip().replace(' ', '').replace('j', 'i') # replace Js with Is
+    key = [char for char in key if "a" <= char <= "z"] # filter non ascii letters
+    key = list(dict.fromkeys(key)) #remove duplicates
 
-    return key_map
+    remaining_letters = [l for l in string.ascii_lowercase if l not in key] #create a list with the remaining letters
+    remaining_letters.remove('j') # remove j from the remaining letters list
 
-def playfair_formater(msg, key):
-    key_map = construct_key_map(key)
+    key.extend(remaining_letters) # add the remaining letters to the key
 
-    msg = msg.lower()
-    msg = msg.replace(' ', '')
-    msg = msg.replace('j', 'i')
-    msg = [letter for letter in msg if letter.isalpha()]
+    key_map = [[],[],[],[],[]] # create the grid
+    pos_map = {} # create a dic to store character position in the grid (row, column)
 
-    i = 0
-    while i < (len(msg) - 1):
-        if msg[i] == msg[i + 1]:
-            msg.insert(i + 1, 'x')
-        i += 2
+    #add the letters to the grid and their positions to the pos dic
+    column = 0
+    row = 0
+    for letter in key:
+        if column > 4:
+            row += 1
+            column = 0
+        key_map[row].append(letter)
+        pos_map[letter] = (row,column)
+        column += 1
 
+    return key_map, pos_map
+
+def playfair_plaintext_formatter(msg):
+    msg = msg.lower().replace('j', 'i')
+    msg = [char for char in msg if "a" <= char <= "z"]
+
+    #add a filler char between repeated letters
+    index = 0
+    while index < (len(msg) - 1):
+        if msg[index] == 'x':
+            if msg[index] == msg[index + 1]:
+                msg.insert(index + 1, 'q')
+            index += 2
+
+        else :
+            if msg[index] == msg[index + 1]:
+                msg.insert(index + 1, 'x')
+            index += 2
+
+    #add a filler char at the end if the msg len isn't even
     if len(msg) % 2 != 0:
-        msg.append('x')
+        if msg[-1] == 'x':
+            msg.append('q')
+        else:
+            msg.append('x')
 
-    cipher = msg.copy()
-    indexes = []
+    digraphs = []
+    for i in range (0, len(msg) - 1, 2):
+        digraphs.append( (msg[i], msg[i + 1]) )
 
-    for i in range(len(msg)):
-        for j in range(5):
-            if msg[i] in key_map[j]:
-                indexes.append([j, key_map[j].index(msg[i])])
+    return digraphs
 
-    return cipher, indexes, key_map
+def playfair_ciphertext_parser(cipher):
+    cipher = cipher.lower().replace('j', 'i')
+    cipher = [char for char in cipher if "a" <= char <= "z"]
+    digraphs = []
+
+    for i in range(0, len(cipher) - 1, 2):
+        digraphs.append((cipher[i], cipher[i + 1]))
+
+    return digraphs
 
 def playfair_encryptor(msg, key):
+    key_map, pos_map = playfair_grid_maker(key)
+    digraphs = playfair_plaintext_formatter(msg)
+    cipher = []
 
-    cipher,indexes, key_map = playfair_formater(msg, key)
+    for di in digraphs:
+        row_a , column_a = pos_map[di[0]]
+        row_b, column_b = pos_map[di[1]]
 
-    for i in range(0,len(indexes)-1,2):
-        row_a = indexes[i][0]
-        column_a = indexes[i][1]
-        row_b = indexes[i + 1][0]
-        column_b = indexes[i + 1][1]
-        if row_a == row_b:
-            if column_a == 4:
-                cipher[i] = key_map[row_a][0]
-            else:
-                cipher[i] = key_map[row_a][column_a + 1]
-            if column_b == 4:
-                cipher[i+1] = key_map[row_b][0]
-            else:
-                cipher[i+1] = key_map[row_b][column_b + 1]
-        elif column_a == column_b:
-            if row_a == 4:
-                cipher[i] = key_map[0][column_a]
-            else:
-                cipher[i] = key_map[row_a + 1][column_a]
-            if row_b == 4:
-                cipher[i+1] = key_map[0][column_b]
-            else:
-                cipher[i+1] = key_map[row_b + 1][column_b]
-        else:
-            cipher[i] = key_map[row_a][column_b]
-            cipher[i+1] = key_map[row_b][column_a]
+        if row_a == row_b: # if the two letters are in the same row
+            cipher.append(key_map[row_a][(column_a + 1) % 5])
+            cipher.append(key_map[row_b][(column_b + 1) % 5])
+
+        elif column_a == column_b: # if the two letters are in the same column
+            cipher.append(key_map[(row_a + 1) % 5][column_a])
+            cipher.append(key_map[(row_b + 1) % 5][column_b])
+
+        else: #rectangle shift rule
+            cipher.append(key_map[row_a][column_b])
+            cipher.append(key_map[row_b][column_a])
 
     return "".join(cipher).upper()
 
 def playfair_decryptor(cipher, key):
+    key_map, pos_map = playfair_grid_maker(key)
+    digraphs = playfair_ciphertext_parser(cipher)
+    plain = []
 
-    text, indexes, key_map = playfair_formater(cipher, key)
+    for di in digraphs:
+        row_a, column_a = pos_map[di[0]]
+        row_b, column_b = pos_map[di[1]]
 
-    for i in range(0, len(indexes) - 1, 2):
-        row_a = indexes[i][0]
-        column_a = indexes[i][1]
-        row_b = indexes[i + 1][0]
-        column_b = indexes[i + 1][1]
+        if row_a == row_b:  # if the two letters are in the same row
+            plain.append(key_map[row_a][(column_a - 1) % 5])
+            plain.append(key_map[row_b][(column_b - 1) % 5])
 
-        if row_a == row_b:
-            if column_a == 0:
-                text[i] = key_map[row_a][4]
-            else:
-                text[i] = key_map[row_a][column_a - 1]
-            if column_b == 0:
-                text[i + 1] = key_map[row_b][4]
-            else:
-                text[i + 1] = key_map[row_b][column_b - 1]
-        elif column_a == column_b:
-            if row_a == 0:
-                text[i] = key_map[4][column_a]
-            else:
-                text[i] = key_map[row_a - 1][column_a]
-            if row_b == 0:
-                text[i + 1] = key_map[4][column_b]
-            else:
-                text[i + 1] = key_map[row_b - 1][column_b]
-        else:
-            text[i] = key_map[row_a][column_b]
-            text[i + 1] = key_map[row_b][column_a]
+        elif column_a == column_b:  # if the two letters are in the same column
+            plain.append(key_map[(row_a - 1) % 5][column_a])
+            plain.append(key_map[(row_b - 1) % 5][column_b])
 
-    return "".join(text).lower()
+        else:  # rectangle shift rule
+            plain.append(key_map[row_a][column_b])
+            plain.append(key_map[row_b][column_a])
+
+    return "".join(plain).lower()

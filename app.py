@@ -1,16 +1,9 @@
-import sys
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QLabel,
-                             QPushButton, QCheckBox, QWidget,
-                             QVBoxLayout, QRadioButton, QButtonGroup,
-                             QLineEdit, QHBoxLayout, QComboBox,
-                             QGroupBox, QTextEdit, QSplitter, QTreeWidget, QStackedWidget, QTreeWidgetItem)
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import (QMainWindow, QSplitter, QTreeWidget, QStackedWidget, QTreeWidgetItem)
 
-from   PyQt5.QtGui     import QIcon, QFont
-from   PyQt5.QtCore    import Qt, QThread, pyqtSignal
-from   PyQt5.QtGui     import QPixmap
-
-from constants import UICONSTANTS, resource_path
-from registry import CLASSICAL_REGISTRY
+from constants import resource_path
+from registry import CLASSICAL_REGISTRY, PAGES_DIC
 
 
 class MainWindow(QMainWindow):
@@ -19,6 +12,7 @@ class MainWindow(QMainWindow):
 
         # Initializing the UI
         self.initUI()
+        self.side_bar.itemClicked.connect(self.on_side_bar_clicked)
 
     def initUI(self):
         #Window setup
@@ -30,6 +24,9 @@ class MainWindow(QMainWindow):
         #Defining everything
         self.main_widget   = QSplitter()
         self.side_bar      = QTreeWidget()
+        self.side_bar.setHeaderHidden(True)
+        self.side_bar.setMinimumWidth(350)
+        self.side_bar.setMaximumWidth(400)
         self.side_bar.setColumnCount(1)
         self.stacked_pages = QStackedWidget()
 
@@ -43,12 +40,30 @@ class MainWindow(QMainWindow):
 
         #Adding the classical ciphers
         for item in CLASSICAL_REGISTRY.keys():
-            self.cipher = QTreeWidgetItem(self.classical_ciphers)
-            self.cipher.setText(0,item)
+            sub_cat = QTreeWidgetItem(self.classical_ciphers)
+            sub_cat.setText(0,item)
+            for cipher in CLASSICAL_REGISTRY[item]:
+                name, key, PageCLass = cipher
+                tree_item = QTreeWidgetItem(sub_cat)
+                tree_item.setText(0,name)
+                tree_item.setData(0,Qt.UserRole, key)
+                page = PageCLass()
+                self.stacked_pages.addWidget(page)
+                PAGES_DIC[key] = page
 
         #Adding the widgets to the splitter
+        self.side_bar.expandAll()
         self.main_widget.addWidget(self.side_bar)
         self.main_widget.addWidget(self.stacked_pages)
+        self.main_widget.setStretchFactor(0, 1)
+        self.main_widget.setStretchFactor(1, 1)
+
 
         #Setting the splitter as the central widget
         self.setCentralWidget(self.main_widget)
+
+
+    def on_side_bar_clicked(self, item):
+        key = item.data(0, Qt.UserRole)
+        if key:
+            self.stacked_pages.setCurrentWidget(PAGES_DIC[key])

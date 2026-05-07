@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QSpinBox
 
+from engines.rail_fence import rail_fence_encryptor, rail_fence_decryptor
 from pages.base_page import BasePage
 
 
@@ -25,3 +26,17 @@ class RailFencePage(BasePage):
         self.key_box.setMinimum(2)
         self.key_box.setMaximum(999)
         self.key_box.setValue(2)
+
+    def encrypt(self):
+        text = self.input_bar.toPlainText()
+        depth = self.key_box.value()
+        self.output_bar.setPlainText(rail_fence_encryptor(text, depth))
+
+    def decrypt(self):
+        text = self.input_bar.toPlainText()
+        depth = self.key_box.value()
+        self.output_bar.setPlainText(rail_fence_decryptor(text, depth))
+
+
+    def validate(self):
+        pass

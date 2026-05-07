@@ -1,22 +1,8 @@
-
-#Vigenere and his autokey ciphers' standards:
-# the key consists of letters only
-
-def vigenere_key_formatter(key):
-    key = list(key.lower().strip().replace(" ", ""))
-    key_map = []
-    base = ord("a")
-    for char in key:
-        if 'a' <= char <= 'z':
-            num = (ord(char) - base)
-            key_map.append(num)
-
-    return key_map
+from engines.vigenere import vigenere_key_formatter
 
 
-def vigenere_encryptor(msg, key):
+def vigenere_auto_plain_encryptor(msg, key):
     key = vigenere_key_formatter(key)
-
     cipher = []
     i = 0
     for char in msg:
@@ -27,15 +13,17 @@ def vigenere_encryptor(msg, key):
                 base = ord("A")
 
             pos = (ord(char) - base)
+            key.append(pos)
             char_in_numbers = (pos + key[i % len(key)]) % 26
-            cipher.append (chr(char_in_numbers + base))
+            cipher.append(chr(char_in_numbers + base))
             i += 1
         else:
             cipher.append(char)
 
     return "".join(cipher)
 
-def vigenere_decryptor(cipher, key):
+
+def vigenere_auto_plain_decryptor(cipher, key):
     key = vigenere_key_formatter(key)
 
     plain = []
@@ -49,7 +37,8 @@ def vigenere_decryptor(cipher, key):
 
             pos = (ord(char) - base)
             char_in_numbers = ((pos - key[i % len(key)]) + 26) % 26
-            plain.append (chr(char_in_numbers + base))
+            key.append(char_in_numbers)
+            plain.append(chr(char_in_numbers + base))
             i += 1
         else:
             plain.append(char)
