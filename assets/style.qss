@@ -197,7 +197,23 @@ QPushButton#clearButton:pressed {
     border: 1px solid #C74460;
 }
 
+QPushButton#toggleButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+}
 
+QPushButton#toggleButton:hover {
+    background-color: #0F2336;
+}
+
+QPushButton#toggleButton:pressed {
+    background-color: #152A3D;
+}
+QPushButton#toggleButton:disabled {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;}
 
 /* =====================================================
    6. COMBOBOX – Algorithm Selector
@@ -286,17 +302,29 @@ QToolTip {
    9. NEW: LABELS – Text Hierarchy
 ===================================================== */
 
-/* Title labels */
 QLabel#titleLabel {
     color: #00D4FF;
     font-size: 30px;
     font-weight: 700;
 }
 
-/* Subtitle / description labels */
+QLabel#heroLabel {
+    color: #00D4FF;
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: 12px;
+}
+
 QLabel#subtitleLabel {
     color: #6B8A99;
     font-size: 25px;
+    font-weight: 400;
+    font-style: italic;
+}
+
+QLabel#quoteLabel {
+    color: #6B8A99;
+    font-size: 16px;
     font-weight: 400;
     font-style: italic;
 }
@@ -319,6 +347,11 @@ QLabel#errorLabel {
 QLabel#mutedLabel {
     color: #3D5A6E;
     font-size: 11px;
+}
+
+QLabel#hintLabel {
+    color: #3D5A6E;
+    font-size: 14px;
 }
 
 QLabel#paramLabel {
@@ -430,16 +463,14 @@ QTreeWidget {
     background-color: #0A1A2A;
     border: none;
     outline: none;
-    padding: 8px 4px;
-    font-family: "Segoe UI", sans-serif;
+    padding: 8px 0px;
 }
 
 QTreeWidget::item {
-    padding: 8px 12px;
+    padding: 4px 12px;
     border-radius: 4px;
-    margin: 1px 6px;
-    color: #E8F4F8;
-    font-size: 14px;
+    margin: 1px 0px;
+    color: #6B8A99;
 }
 
 QTreeWidget::item:selected {
@@ -509,13 +540,24 @@ QSpinBox:hover {
 }
 
 QSpinBox:focus {
-    border: 1px solid #00D4FF;
+    border: 2px solid #00D4FF;
 }
 
 QSpinBox::up-button, QSpinBox::down-button {
     background-color: #0F2336;
     border: none;
     width: 20px;
+}
+QSpinBox::up-arrow {
+    image: url(assets/chevron-up.svg);
+    width: 10px;
+    height: 10px;
+}
+
+QSpinBox::down-arrow {
+    image: url(assets/chevron-down.svg);
+    width: 10px;
+    height: 10px;
 }
 
 QSpinBox::up-button:hover, QSpinBox::down-button:hover {

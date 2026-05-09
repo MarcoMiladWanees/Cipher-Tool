@@ -12,13 +12,9 @@ class VigenereAutoCipherPage(BasePage):
         self.update_ui()
 
     def encrypt(self):
-        text = self.input_bar.toPlainText()
-        key = self.key_bar.text()
         if not self.error:
-            self.output_bar.setPlainText(vigenere_auto_cipher_encryptor(text, key))
+            self.output_bar.setPlainText(vigenere_auto_cipher_encryptor(self.text, self.key))
 
     def decrypt(self):
-        text = self.input_bar.toPlainText()
-        key = self.key_bar.text()
         if not self.error:
-            self.output_bar.setPlainText(vigenere_auto_cipher_decryptor(text, key))
+            self.output_bar.setPlainText(vigenere_auto_cipher_decryptor(self.text, self.key))

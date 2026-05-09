@@ -1,5 +1,7 @@
 from engines.playfair import playfair_encryptor, playfair_decryptor
 from pages.base_page import BasePage
+from utils.validators import validator_playfair_decrypt
+
 
 class PlayfairPage(BasePage):
     def __init__(self):
@@ -11,13 +13,13 @@ class PlayfairPage(BasePage):
         self.update_ui()
 
     def encrypt(self):
-        text = self.input_bar.toPlainText().strip().replace(" ", "")
-        key = self.key_bar.text().strip().replace(" ", "")
         if not self.error:
-            self.output_bar.setPlainText(playfair_encryptor(text, key))
+            self.output_bar.setPlainText(playfair_encryptor(self.text, self.key))
 
     def decrypt(self):
-        text = self.input_bar.toPlainText().strip().replace(" ", "")
-        key = self.key_bar.text().strip().replace(" ", "")
+        if validator_playfair_decrypt(self.text):
+            self.error = True
+            self.update_widget_style(self.input_bar, True)
+            self.output_bar.setPlainText("Error: Playfair ciphertext must have an even number of characters.")
         if not self.error:
-            self.output_bar.setPlainText(playfair_decryptor(text, key))
+            self.output_bar.setPlainText(playfair_decryptor(self.text, self.key))

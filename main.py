@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication
-from app import MainWindow
-from constants import resource_path
+from utils.UI import MainWindow
+from utils.constants import resource_path
 import sys
 
 
@@ -11,7 +11,7 @@ def main():
         app.setStyleSheet(f.read())
 
     window = MainWindow()
-    window.show()
+    window.showMaximized()
     sys.exit(app.exec_())
 
 if __name__ == "__main__":

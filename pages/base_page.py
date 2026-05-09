@@ -1,9 +1,9 @@
-from PyQt5.QtCore import Qt, QEventLoop, QTimer
+from PyQt5.QtCore import QEventLoop, QTimer
 from PyQt5.QtWidgets import (QLabel,
                              QPushButton, QWidget, QVBoxLayout, QLineEdit,
-                             QHBoxLayout, QPlainTextEdit, QSlider, QSpinBox, QGroupBox, QFrame, QApplication)
-import time
-# the 5 that validate like the base page: Mono, playfair, vigenere and its types
+                             QHBoxLayout, QPlainTextEdit, QSpinBox, QGroupBox, QFrame, QApplication)
+from utils.validators import validator_A_B
+
 class BasePage(QWidget):
     def __init__(self, cipher_name, cipher_description):
         super().__init__()
@@ -25,7 +25,7 @@ class BasePage(QWidget):
     def initUI(self):
         self.main_layout = QVBoxLayout()
         self.main_layout.setSpacing(20)
-        self.main_layout.setContentsMargins(24, 24, 24, 24)
+        self.main_layout.setContentsMargins(65, 24, 24, 24)
 
         #the 4 big layouts
         self.build_header()
@@ -125,25 +125,14 @@ class BasePage(QWidget):
         self.key_label = QLabel("Shift:")
         self.key_label.setObjectName("paramLabel")
 
-        # slider
-        self.key_slider = QSlider(Qt.Horizontal)
-        self.key_slider.setMinimum(0)
-        self.key_slider.setMaximum(25)
-        self.key_slider.setValue(0)
-
         # spinbox
         self.key_box = QSpinBox()
         self.key_box.setMinimum(0)
         self.key_box.setMaximum(25)
         self.key_box.setValue(0)
 
-        # linking the spinbox to the slider
-        self.key_box.valueChanged.connect(self.key_slider.setValue)
-        self.key_slider.valueChanged.connect(self.key_box.setValue)
-
         # adding to the parameter layout
         self.parameters_layout.addWidget(self.key_label)
-        self.parameters_layout.addWidget(self.key_slider)
         self.parameters_layout.addWidget(self.key_box)
 
     def build_keyword_widgets(self):
@@ -203,19 +192,20 @@ class BasePage(QWidget):
 
     def validate(self):
         self.error = False
-        self.input_error = False
-        self.key_error = False
-        text = self.input_bar.toPlainText()
-        key = self.key_bar.text()
 
-        if not text:
-            self.input_error = True
-
-        if not key:
-            self.key_error = True
+        self.input_error = validator_A_B(self.text)
+        self.key_error = validator_A_B(self.key)
 
         self.update_widget_style(self.input_bar, self.input_error)
         self.update_widget_style(self.key_bar, self.key_error)
 
         if self.input_error or self.key_error:
             self.error = True
+
+    @property
+    def text(self):
+        return self.input_bar.toPlainText().strip()
+
+    @property
+    def key(self):
+        return self.key_bar.text().strip().replace(" ", "")

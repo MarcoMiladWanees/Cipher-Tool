@@ -12,14 +12,10 @@ class VigenerePage(BasePage):
         self.update_ui()
 
     def encrypt(self):
-        text = self.input_bar.toPlainText()
-        key = self.key_bar.text()
         if not self.error:
-            self.output_bar.setPlainText(vigenere_encryptor(text, key))
+            self.output_bar.setPlainText(vigenere_encryptor(self.text, self.key))
 
     def decrypt(self):
-        text = self.input_bar.toPlainText()
-        key = self.key_bar.text()
         if not self.error:
-            self.output_bar.setPlainText(vigenere_decryptor(text, key))
+            self.output_bar.setPlainText(vigenere_decryptor(self.text, self.key))
 

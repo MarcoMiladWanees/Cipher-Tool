@@ -1,5 +1,7 @@
 from engines.row_transposition import row_transposition_encryptor, row_transposition_decryptor
 from pages.base_page import BasePage
+from utils.validators import validator_C, validator_row_trans_key, validator_row_trans_decrypt
+
 
 class RowTransPage(BasePage):
     def __init__(self):
@@ -14,29 +16,21 @@ class RowTransPage(BasePage):
         self.key_bar.setPlaceholderText("e.g., 3142 or ZEBRA")
 
     def encrypt(self):
-        text = self.input_bar.toPlainText().strip().replace(" ", "")
-        key = self.key_bar.text().strip().replace(" ", "")
-        if self.error:
-            self.output_bar.setPlainText(row_transposition_encryptor(text, key))
+        if not self.error:
+            self.output_bar.setPlainText(row_transposition_encryptor(self.text, self.key))
 
     def decrypt(self):
-        text = self.input_bar.toPlainText().strip().replace(" ", "")
-        key = self.key_bar.text().strip().replace(" ", "")
-        if self.error:
-            self.output_bar.setPlainText(row_transposition_decryptor(text, key))
+        if validator_row_trans_decrypt(self.text, self.key):
+            self.update_widget_style(self.input_bar, True)
+            self.output_bar.setPlainText("Error: Input length must be a multiple of the key length ")
+            self.error = True
+        if not self.error:
+            self.output_bar.setPlainText(row_transposition_decryptor(self.text, self.key))
 
     def validate(self):
         self.error = False
-        self.input_error = False
-        self.key_error = False
-        text = self.input_bar.toPlainText().strip().replace(" ", "")
-        key = self.key_bar.text().strip().replace(" ", "")
-
-        if not key or (not key.isalpha() and not key.isdigit()):
-            self.key_error = True
-
-        if not text:
-            self.input_error = True
+        self.input_error = validator_C(self.text)
+        self.key_error = validator_row_trans_key(self.key)
 
         self.update_widget_style(self.input_bar, self.input_error)
         self.update_widget_style(self.key_bar, self.key_error)
