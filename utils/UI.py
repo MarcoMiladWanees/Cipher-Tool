@@ -3,6 +3,7 @@ from PyQt5.QtGui import QIcon, QFont, QBrush, QColor, QKeySequence, QPainter
 from PyQt5.QtWidgets import (QMainWindow, QTreeWidget, QStackedWidget, QTreeWidgetItem, QPushButton,
                              QShortcut, QWidget, QHBoxLayout)
 
+from pages import welcome_page
 from pages.welcome_page import WelcomePage
 from utils.constants import resource_path
 from utils.registry import CLASSICAL_REGISTRY, PAGES_DIC
@@ -23,9 +24,9 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(1000, 650)
 
         #icons
-        self.icon_menu = QIcon(resource_path("assets/menu.svg"))
-        self.icon_chevron = QIcon(resource_path("assets/chevron-right.svg"))
-
+        self.menu_icon = QIcon(resource_path("assets/menu.svg"))
+        self.chevron_icon = QIcon(resource_path("assets/chevron-right.svg"))
+        self.close_icon = QIcon(resource_path("assets/x.svg"))
         #Defining everything
         self.main_widget   = QWidget()
         self.main_layout = QHBoxLayout()
@@ -36,18 +37,24 @@ class MainWindow(QMainWindow):
         #defining the toggle button
 
         self.toggle_button = QPushButton("x",self)
-        self.toggle_button.setIcon(self.icon_chevron)
-        self.toggle_button.setIconSize(QSize(20, 20))
+        self.toggle_button.setIcon(self.chevron_icon)
+        self.toggle_button.setIconSize(QSize(24, 24))
         self.toggle_button.setText("")
         self.toggle_button.setObjectName("toggleButton")
-        # toggle button
-        self.toggle_button.setFixedSize(50, 50)
+        self.toggle_button.setFixedSize(40, 40)
         self.toggle_button.move(UICONSTANTS.TOGGLE_X_COLLAPSED, UICONSTANTS.TOGGLE_Y)
-        self.toggle_button.raise_()
-        self.toggle_button.clicked.connect(self.on_toggle_clicked)
 
-        self.side_bar_button_shortcut = QShortcut(QKeySequence("Ctrl+S"
-                                                               "), self) #defining the button shortcut
+        self.side_bar_button_shortcut = QShortcut(QKeySequence("Ctrl+S"), self) #defining the button shortcut
+
+        # X button
+        self.close_button = QPushButton("X",self)
+        self.close_button.setIcon(self.close_icon)
+        self.close_button.setIconSize(QSize(24, 24))
+        self.close_button.setText("")
+        self.close_button.setObjectName("closeButton")
+        self.close_button.setFixedSize(40, 40)
+        self.close_button.move(UICONSTANTS.TOGGLE_X_COLLAPSED, UICONSTANTS.TOGGLE_Y)
+        self.close_button.hide()
 
         # items' font
         self.sidebar_font = QFont()
@@ -86,8 +93,8 @@ class MainWindow(QMainWindow):
 
         #pages stack
         self.stacked_pages = QStackedWidget()
-        welcome_page = WelcomePage()
-        self.stacked_pages.addWidget(welcome_page)
+        self.welcome_page = WelcomePage()
+        self.stacked_pages.addWidget(self.welcome_page)
         #Adding stuff to the sidebar
 
         #Adding the Top level Items
@@ -113,16 +120,32 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
 
-        self.side_bar_button_shortcut.activated.connect(self.on_toggle_clicked)
-        self.side_bar.itemClicked.connect(self.on_side_bar_clicked)
+        self.toggle_button.raise_()
+        self.close_button.raise_()
+
+        #signals....
+        self.toggle_button.clicked.connect(self.on_toggle_button_clicked)
+        self.side_bar_button_shortcut.activated.connect(self.on_toggle_button_clicked)
+        self.side_bar.itemClicked.connect(self.on_side_bar_item_clicked)
         self.sidebar_animation.finished.connect(self.on_sidebar_animation_finished)
+        self.close_button.clicked.connect(self.on_close_clicked)
+        self.stacked_pages.currentChanged.connect(self.on_page_changed)
 
+    def on_close_clicked(self):
+        self.stacked_pages.setCurrentWidget(self.welcome_page)
 
-    def on_side_bar_clicked(self, item):
+    def on_page_changed(self):
+        if self.stacked_pages.currentWidget() == self.welcome_page:
+            self.close_button.hide()
+        else:
+            self.close_button.show()
+
+    def on_side_bar_item_clicked(self, item):
         key = item.data(0, Qt.UserRole)
         if key:
             self.stacked_pages.setCurrentWidget(PAGES_DIC[key])
-    def on_toggle_clicked(self):
+
+    def on_toggle_button_clicked(self):
         # Animate min and max in parallel so the widget's actual width
         # (always clamped to min ≤ width ≤ max) follows smoothly.
         if not self.toggle_button.isEnabled():
@@ -148,20 +171,21 @@ class MainWindow(QMainWindow):
 
         self.side_bar_collapsed = not self.side_bar_collapsed
         if self.side_bar_collapsed:
-            self.toggle_button.setIcon(self.icon_chevron)
+            self.toggle_button.setIcon(self.chevron_icon)
         else:
-            self.toggle_button.setIcon(self.icon_menu)
+            self.toggle_button.setIcon(self.menu_icon)
 
     def on_sidebar_animation_finished(self):
         self.toggle_button.setEnabled(True)
 
     def resizeEvent(self, event):
         if self.side_bar_collapsed:
-            self.toggle_button.move(8, UICONSTANTS.TOGGLE_Y)
+            self.toggle_button.move(UICONSTANTS.TOGGLE_X_COLLAPSED, UICONSTANTS.TOGGLE_Y)
         else:
             self.toggle_button.move(UICONSTANTS.TOGGLE_X_EXPANDED, UICONSTANTS.TOGGLE_Y)
-        super().resizeEvent(event)
+        self.close_button.move(self.width() - 40 - UICONSTANTS.TOGGLE_X_COLLAPSED, UICONSTANTS.TOGGLE_Y)
 
+        super().resizeEvent(event)
 
     def _make_category_item(self, text):
         top_level_font = QFont()

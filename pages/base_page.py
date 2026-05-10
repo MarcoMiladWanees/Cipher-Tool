@@ -1,7 +1,7 @@
-from PyQt5.QtCore import QEventLoop, QTimer
+from PyQt5.QtCore import Qt, QEventLoop, QTimer
 from PyQt5.QtWidgets import (QLabel,
                              QPushButton, QWidget, QVBoxLayout, QLineEdit,
-                             QHBoxLayout, QPlainTextEdit, QSpinBox, QGroupBox, QFrame, QApplication)
+                             QHBoxLayout, QPlainTextEdit, QSlider, QSpinBox, QGroupBox, QFrame, QApplication)
 from utils.validators import validator_A_B
 
 class BasePage(QWidget):
@@ -25,7 +25,7 @@ class BasePage(QWidget):
     def initUI(self):
         self.main_layout = QVBoxLayout()
         self.main_layout.setSpacing(20)
-        self.main_layout.setContentsMargins(65, 24, 24, 24)
+        self.main_layout.setContentsMargins(55, 24, 24, 24)
 
         #the 4 big layouts
         self.build_header()
@@ -36,9 +36,7 @@ class BasePage(QWidget):
         #adding layputs to the main layout
         self.main_layout.addLayout(self.header_layout)
         self.main_layout.addSpacing(20)
-        self.main_layout.addWidget(self.create_seperator())
         self.main_layout.addLayout(self.parameters_layout)
-        self.main_layout.addWidget(self.create_seperator())
         self.main_layout.addSpacing(20)
         self.main_layout.addLayout(self.io_layout)
         self.main_layout.addSpacing(20)
